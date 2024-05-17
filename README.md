@@ -6,7 +6,7 @@
 
 <h1 align="left" style="text-align: center;">Gato Caolho</h1>
 <h2 align="left" style="text-align: center;">Trabalho Integrador</h2>
-<h3 align="left" style="text-align: center;">Ministrado por: Bruno de Macêdo(2121101030), Franciele Cesaro() e Jonathan Gotz() </h3>
+<h3 align="left" style="text-align: center;">Ministrado por: Bruno de Macêdo(2121101030), Franciele Dalarosa(2121101053) e Jonathan Gotz(2121101052) </h3>
 
 
 </br>
