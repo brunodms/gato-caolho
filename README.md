@@ -13,3 +13,4 @@
 
 # :pushpin: Conteúdo até agora
 - Engenharia de Software: pasta com requisitos, diagramas e descrições de necessidades
+- Banco de Dados 1: pasta com Modelo Conceitual e Modelo Relacional em código
