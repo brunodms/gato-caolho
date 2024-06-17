@@ -10,12 +10,10 @@ create table if not exists usuario(
   email varchar(25) not null,
   cliente_id integer,
   funcionario_id integer,
-  admin_id integer,
   telefone integer,
   constraint pk_usuario primary key (id_usuario),
   constraint fk_usuario_cliente foreign key (cliente_id) references cliente(id_cliente),
-  constraint fk_usuario_funcionario foreign key (funcionario_id) references funcionario(id_funcionario),
-  constraint fk_usuario_admin foreign key (admin_id) references admin(id_admin)
+  constraint fk_usuario_funcionario foreign key (funcionario_id) references funcionario(id_funcionario)
 );
 --
 create table if not exists cliente(
