@@ -34,8 +34,7 @@ CREATE TABLE IF NOT EXISTS "venda" (
 
 CREATE TABLE IF NOT EXISTS "forma_pagamento" (
   "id_forma_pagamento" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(20) NOT NULL,
-  "status" BOOLEAN NOT NULL
+  "nome" VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "pedido" (
@@ -152,4 +151,31 @@ insert into usuario (nome, cpf, senha, email, telefone, cargo_id, status) values
                     ('Bruno', '172.336.570-09', 'senhavalida', 'brunao@gmail.com',62323278913 , 1, true),
                     ('Fran', '001.720.750-92', 'senhavalida', 'fran@gmail.com',12345678910 , 2, true);
 
-select * from usuario order by id_usuario;
+INSERT INTO "secao" (nome) VALUES
+('Baguete'),
+('Burguers'),
+('Cervejas'),
+('Chopp'),
+('Drinks'),
+('Não Alcoolico'),
+('Pizza'),
+('Porção');
+
+INSERT INTO "produto" (nome, descricao, unidade_medida, valor, marca, secao_id) VALUES
+('Burguer Gato Caolho', 'Hambúrguer com queijo, alface e tomate', 'UN', 20.00, 'Gato Caolho', 2),
+('Burguer Gato Persa', 'Hambúrguer com queijo e bacon', 'UN', 24.00, 'Gato Caolho', 2),
+('Brisa da Manha', 'Chopp', '350ml', 12.00, 'Artesanal', 4),
+('Pizza Calabresa', 'Pizza com calabresa e cebola', 'G', 60.00, 'Marca D', 7);
+
+INSERT INTO "desconto" (produto_id, valor_desconto, descricao, data_inicial, data_final, hora_inicial, hora_final) VALUES
+(1, 5.00, 'Desconto de 5 r no Gato Caolho', '2024-06-24', '2024-06-25', '12:00:00', '14:00:00'),
+(2, 5.25, 'Desconto de 5 r no Gato Persa', '2024-06-24', '2024-06-25', '13:00:00', '15:00:00'),
+(3, 3.50, 'Desconto de 3 r no chopp BA', '2024-06-24', '2024-06-25', '14:00:00', '16:00:00'),
+(4, 10.50, 'Desconto de 8 r na Pizza', '2024-06-24', '2024-06-25', '15:00:00', '17:00:00');
+
+INSERT INTO "forma_pagamento" (nome) VALUES
+('Dinheiro'),
+('Cartão de Crédito'),
+('Cartão de Débito'),
+('Pix'),
+('Fiado');
