@@ -13,14 +13,15 @@ CREATE TABLE IF NOT EXISTS "usuario" (
   "senha" VARCHAR(100) NOT NULL,
   "email" VARCHAR(256) NOT NULL,
   "telefone" BIGINT,
-  "cargo_id" INTEGER NOT NULL,
-  "status" BOOLEAN,
   "comanda_id" INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS "cargo" (
   "id_cargo" INTEGER PRIMARY KEY,
-  "cargo" VARCHAR(30) NOT NULL
+  "cargo" VARCHAR(30) NOT NULL,
+  "id_usuario" INTEGER NOT NULL,
+  "status" BOOLEAN,
+
 );
 
 CREATE TABLE IF NOT EXISTS "comanda" (
@@ -88,7 +89,7 @@ CREATE TABLE IF NOT EXISTS "desconto" (
 -- ##########################################################################################################################################################
 
 
-ALTER TABLE "usuario" ADD CONSTRAINT "fk_cargo_funcionario" FOREIGN KEY ("cargo_id") REFERENCES "cargo" ("id_cargo");
+ALTER TABLE "funcionario" ADD CONSTRAINT "fk_usuario" FOREIGN KEY ("id_usuario") REFERENCES "usuario" ("id_usuario");
 
 ALTER TABLE "usuario" ADD CONSTRAINT "fk_comanda_cliente" FOREIGN KEY ("comanda_id") REFERENCES "comanda" ("id_comanda");
 
