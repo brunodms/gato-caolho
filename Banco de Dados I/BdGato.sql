@@ -4,6 +4,8 @@ set datestyle to 'ISO,DMY';
 
 create table if not exists cliente(
   id_cliente serial primary key
+  comanda_id integer,
+  constraint fk_cliente_comanda foreign key (comanda_id) references comanda(id_comanda)
 );
 
 create table if not exists funcionario(
