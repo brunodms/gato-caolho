@@ -1,3 +1,11 @@
+create database gato_caolho;
+\c gato_caolho
+set datestyle to 'ISO,DMY';
+
+-- ##########################################################################################################################################################
+-- CREATE TABLES
+-- ##########################################################################################################################################################
+
 CREATE TABLE "usuario" (
   "id_usuario" SERIAL PRIMARY KEY,
   "nome" VARCHAR(30) NOT NULL,
@@ -80,6 +88,10 @@ CREATE TABLE "desconto" (
   "hora_final" TIME
 );
 
+-- ##########################################################################################################################################################
+-- FOREIGN KEYS
+-- ##########################################################################################################################################################
+
 ALTER TABLE "telefone" ADD CONSTRAINT "fk_usuario_telefone" FOREIGN KEY ("usuario_id") REFERENCES "usuario" ("id_usuario");
 
 ALTER TABLE "usuario" ADD CONSTRAINT "fk_cargo_funcionario" FOREIGN KEY ("cargo_id") REFERENCES "cargo" ("id_cargo");
@@ -99,3 +111,20 @@ ALTER TABLE "item_pedido" ADD CONSTRAINT "fk_item_pedido_produto" FOREIGN KEY ("
 ALTER TABLE "produto" ADD CONSTRAINT "fk_produto_secao" FOREIGN KEY ("secao_id") REFERENCES "secao" ("id_secao");
 
 ALTER TABLE "desconto" ADD CONSTRAINT "fk_desconto_produto" FOREIGN KEY ("produto_id") REFERENCES "produto" ("id_produto");
+
+-- ##########################################################################################################################################################
+-- INSERTS
+-- ##########################################################################################################################################################
+insert into cargo(id_cargo, cargo) values 
+									 (1, 'Gerente'), 
+					  			     (2, 'Funcionário'),
+									 (3, 'Cliente');
+
+insert into usuario (id_usuario, nome, cpf, senha, email, cargo_id, status, comanda_id) values 
+									 (1, 'Julia', 12345678910, 123, 'juju@gmail.com', 3, true, null),
+									 (2, 'Gatinha Comunista', 12105140955, 123, 'gata@gmail.com', 3, true, null),
+									 (3, 'Bruno', 654654654, 222, 'brunao@gmail.com', 1, true, null),
+									 (4, 'Fran', 7985643213, 3333, 'fran@gmail.com', 2, true, null);
+
+insert into telefone (id_telefone, usuario_id, telefone) values (1, 1, 48984468381),
+																(2, 2, 99999999999);
