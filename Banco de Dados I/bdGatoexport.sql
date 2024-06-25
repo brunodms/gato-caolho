@@ -2,27 +2,26 @@ CREATE TABLE "usuario" (
   "id_usuario" SERIAL PRIMARY KEY,
   "nome" VARCHAR(30) NOT NULL,
   "cpf" VARCHAR(14) NOT NULL,
-  "senha" INTEGER NOT NULL,
+  "senha" VARCHAR(100) NOT NULL,
   "email" VARCHAR(25) NOT NULL,
-  "cliente_id" INTEGER,
-  "funcionario_id" INTEGER,
-  "telefone" INTEGER
+  "cargo_id" INTEGER,
+  "status" BOOLEAN,
+  "comanda_id" INTEGER
 );
 
-CREATE TABLE "cliente" (
-  "id_cliente" INTEGER PRIMARY KEY
+CREATE TABLE "telefone" (
+  "id_telefone" SERIAL PRIMARY KEY,
+  "usuario_id" INTEGER NOT NULL,
+  "telefone" INTEGER NOT NULL
 );
 
-CREATE TABLE "funcionario" (
-  "id_funcionario" INTEGER PRIMARY KEY,
-  "cargo" VARCHAR(30) NOT NULL,
-  "status" BOOLEAN NOT NULL
+CREATE TABLE "cargo" (
+  "id_cargo" INTEGER PRIMARY KEY,
+  "cargo" VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE "comanda" (
-  "id_comanda" SERIAL PRIMARY KEY,
-  "numero" INTEGER NOT NULL,
-  "cliente_id" INTEGER NOT NULL
+  "id_comanda" SERIAL PRIMARY KEY
 );
 
 CREATE TABLE "venda" (
@@ -81,11 +80,11 @@ CREATE TABLE "desconto" (
   "hora_final" TIME
 );
 
-ALTER TABLE "usuario" ADD CONSTRAINT "fk_usuario_cliente" FOREIGN KEY ("cliente_id") REFERENCES "cliente" ("id_cliente");
+ALTER TABLE "telefone" ADD CONSTRAINT "fk_usuario_telefone" FOREIGN KEY ("usuario_id") REFERENCES "usuario" ("id_usuario");
 
-ALTER TABLE "usuario" ADD CONSTRAINT "fk_usuario_funcionario" FOREIGN KEY ("funcionario_id") REFERENCES "funcionario" ("id_funcionario");
+ALTER TABLE "usuario" ADD CONSTRAINT "fk_cargo_funcionario" FOREIGN KEY ("cargo_id") REFERENCES "cargo" ("id_cargo");
 
-ALTER TABLE "comanda" ADD CONSTRAINT "fk_comanda_cliente" FOREIGN KEY ("cliente_id") REFERENCES "cliente" ("id_cliente");
+ALTER TABLE "usuario" ADD CONSTRAINT "fk_comanda_cliente" FOREIGN KEY ("comanda_id") REFERENCES "comanda" ("id_comanda");
 
 ALTER TABLE "venda" ADD CONSTRAINT "fk_venda_comanda" FOREIGN KEY ("comanda_id") REFERENCES "comanda" ("id_comanda");
 
