@@ -8,10 +8,10 @@ set datestyle to 'ISO,DMY';
 
 CREATE TABLE IF NOT EXISTS "usuario" (
   "id_usuario" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(30) NOT NULL,
-  "cpf" VARCHAR(14) NOT NULL,
+  "nome" VARCHAR(60) NOT NULL,
+  "cpf" VARCHAR(18) NOT NULL UNIQUE,
   "senha" VARCHAR(100) NOT NULL,
-  "email" VARCHAR(25) NOT NULL,
+  "email" VARCHAR(256) NOT NULL,
   "cargo_id" INTEGER NOT NULL,
   "status" BOOLEAN,
   "comanda_id" INTEGER
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS "usuario" (
 CREATE TABLE IF NOT EXISTS "telefone" (
   "id_telefone" SERIAL PRIMARY KEY,
   "usuario_id" INTEGER NOT NULL,
-  "telefone" INTEGER NOT NULL
+  "telefone" BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "cargo" (
@@ -115,16 +115,17 @@ ALTER TABLE "desconto" ADD CONSTRAINT "fk_desconto_produto" FOREIGN KEY ("produt
 -- ##########################################################################################################################################################
 -- INSERTS
 -- ##########################################################################################################################################################
-insert into cargo(id_cargo, cargo) values 
-									 (1, 'Gerente'), 
-					  			     (2, 'Funcionário'),
-									 (3, 'Cliente');
+insert into cargo (id_cargo, cargo) values 
+                  (1, 'Gerente'), 
+                  (2, 'Funcionário'),
+                  (3, 'Cliente');
 
-insert into usuario (id_usuario, nome, cpf, senha, email, cargo_id, status, comanda_id) values 
-									 (1, 'Julia', 12345678910, 123, 'juju@gmail.com', 3, true, null),
-									 (2, 'Gatinha Comunista', 12105140955, 123, 'gata@gmail.com', 3, true, null),
-									 (3, 'Bruno', 654654654, 222, 'brunao@gmail.com', 1, true, null),
-									 (4, 'Fran', 7985643213, 3333, 'fran@gmail.com', 2, true, null);
+insert into usuario (nome, cpf, senha, email, cargo_id, status, comanda_id) values 
+                    ('Julia', '662.929.240-50', 'senhavalida', 'juju@gmail.com', 3, true, null),
+                    ('Gatinha Comunista', '571.049.780-03', 'senhavalida', 'gata@gmail.com', 3, true, null),
+                    ('Bruno', '172.336.570-09', 'senhavalida', 'brunao@gmail.com', 1, true, null),
+                    ('Fran', '001.720.750-92', 'senhavalida', 'fran@gmail.com', 2, true, null);
 
-insert into telefone (id_telefone, usuario_id, telefone) values (1, 1, 48984468381),
-																(2, 2, 99999999999);
+insert into telefone  (usuario_id, telefone) values 
+                      (1, 48984468381),
+											(2, 99999999999);
