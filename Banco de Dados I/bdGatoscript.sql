@@ -1,5 +1,3 @@
-create database gato_caolho;
-\c gato_caolho
 set datestyle to 'ISO,DMY';
 
 -- ##########################################################################################################################################################
@@ -104,12 +102,10 @@ ALTER TABLE "produto" ADD CONSTRAINT "fk_produto_secao" FOREIGN KEY ("secao_id")
 
 ALTER TABLE "desconto" ADD CONSTRAINT "fk_desconto_produto" FOREIGN KEY ("produto_id") REFERENCES "produto" ("id_produto");
 
-
 -- ##########################################################################################################################################################
 -- Triggers
 -- ##########################################################################################################################################################
 
--- RODAR UM POR VEZ
 CREATE OR REPLACE FUNCTION criar_comanda_para_cliente()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -128,24 +124,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- RODAR UM POR VEZ
 CREATE TRIGGER after_usuario_insert
 AFTER INSERT ON usuario
 FOR EACH ROW
 EXECUTE FUNCTION criar_comanda_para_cliente();
 
--- RODAR UM POR VEZ ESSES 2 APÓS CRIAR AS 100 COMANDAS PADRÃO
--- Verificar a sequência atual
-SELECT last_value FROM comanda_id_comanda_seq;
-
--- RODAR UM POR VEZ
--- Ajustar a sequência para o maior valor + 1 na tabela comanda
-SELECT setval('comanda_id_comanda_seq', (SELECT MAX(id_comanda) FROM comanda) + 1);
-
-
 -- ##########################################################################################################################################################
 -- INSERTS
 -- ##########################################################################################################################################################
+
 insert into cargo (id_cargo, cargo) values 
                   (1, 'Gerente'), 
                   (2, 'Funcionário'),
@@ -153,9 +140,16 @@ insert into cargo (id_cargo, cargo) values
 
 insert into comanda (id_comanda) select * from generate_series(1,100);
 
+-- Verificar a sequência atual
+SELECT last_value FROM comanda_id_comanda_seq;
+
+-- Ajustar a sequência para o maior valor na tabela comanda
+SELECT setval('comanda_id_comanda_seq', (SELECT MAX(id_comanda) FROM comanda));
 
 insert into usuario (nome, cpf, senha, email, telefone, cargo_id, status) values 
                     ('Julia', '662.929.240-50', 'senhavalida', 'juju@gmail.com', 49938768385, 3, true),
                     ('Gatinha Comunista', '571.049.780-03', 'senhavalida', 'gata@gmail.com',97933515513, 3, true),
                     ('Bruno', '172.336.570-09', 'senhavalida', 'brunao@gmail.com',62323278913 , 1, true),
                     ('Fran', '001.720.750-92', 'senhavalida', 'fran@gmail.com',12345678910 , 2, true);
+
+select * from usuario order by id_usuario;
