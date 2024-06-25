@@ -4,7 +4,7 @@ CREATE TABLE "usuario" (
   "cpf" VARCHAR(14) NOT NULL,
   "senha" VARCHAR(100) NOT NULL,
   "email" VARCHAR(25) NOT NULL,
-  "cargo_id" INTEGER,
+  "cargo_id" INTEGER NOT NULL,
   "status" BOOLEAN,
   "comanda_id" INTEGER
 );
