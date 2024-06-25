@@ -5,23 +5,21 @@ set datestyle to 'ISO,DMY';
 -- ##########################################################################################################################################################
 -- CREATE TABLES
 -- ##########################################################################################################################################################
-
 CREATE TABLE IF NOT EXISTS "usuario" (
   "id_usuario" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(60) NOT NULL,
-  "cpf" VARCHAR(18) NOT NULL UNIQUE,
+  "nome" VARCHAR(100) NOT NULL,
+  "cpf" VARCHAR(20) NOT NULL,
   "senha" VARCHAR(100) NOT NULL,
   "email" VARCHAR(256) NOT NULL,
-  "telefone" BIGINT,
+  "telefone" BIGINT NOT NULL,
+  "cargo_id" INTEGER NOT NULL,
+  "status" BOOLEAN,
   "comanda_id" INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS "cargo" (
   "id_cargo" INTEGER PRIMARY KEY,
-  "cargo" VARCHAR(30) NOT NULL,
-  "id_usuario" INTEGER NOT NULL,
-  "status" BOOLEAN
-
+  "cargo" VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "comanda" (
