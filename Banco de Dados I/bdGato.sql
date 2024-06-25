@@ -6,7 +6,7 @@ set datestyle to 'ISO,DMY';
 -- CREATE TABLES
 -- ##########################################################################################################################################################
 
-CREATE TABLE "usuario" (
+CREATE TABLE IF NOT EXISTS "usuario" (
   "id_usuario" SERIAL PRIMARY KEY,
   "nome" VARCHAR(30) NOT NULL,
   "cpf" VARCHAR(14) NOT NULL,
@@ -17,22 +17,22 @@ CREATE TABLE "usuario" (
   "comanda_id" INTEGER
 );
 
-CREATE TABLE "telefone" (
+CREATE TABLE IF NOT EXISTS "telefone" (
   "id_telefone" SERIAL PRIMARY KEY,
   "usuario_id" INTEGER NOT NULL,
   "telefone" INTEGER NOT NULL
 );
 
-CREATE TABLE "cargo" (
+CREATE TABLE IF NOT EXISTS "cargo" (
   "id_cargo" INTEGER PRIMARY KEY,
   "cargo" VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE "comanda" (
+CREATE TABLE IF NOT EXISTS "comanda" (
   "id_comanda" SERIAL PRIMARY KEY
 );
 
-CREATE TABLE "venda" (
+CREATE TABLE IF NOT EXISTS "venda" (
   "id_venda" SERIAL PRIMARY KEY,
   "comanda_id" INTEGER NOT NULL,
   "forma_pagamento_id" INTEGER NOT NULL,
@@ -40,13 +40,13 @@ CREATE TABLE "venda" (
   "hora_venda" TIME NOT NULL
 );
 
-CREATE TABLE "forma_pagamento" (
+CREATE TABLE IF NOT EXISTS "forma_pagamento" (
   "id_forma_pagamento" SERIAL PRIMARY KEY,
   "nome" VARCHAR(20) NOT NULL,
   "status" BOOLEAN NOT NULL
 );
 
-CREATE TABLE "pedido" (
+CREATE TABLE IF NOT EXISTS "pedido" (
   "id_pedido" SERIAL PRIMARY KEY,
   "comanda_id" INTEGER NOT NULL,
   "mesa" INTEGER NOT NULL,
@@ -56,13 +56,13 @@ CREATE TABLE "pedido" (
   "hora_pedido" TIME NOT NULL
 );
 
-CREATE TABLE "item_pedido" (
+CREATE TABLE IF NOT EXISTS "item_pedido" (
   "id_item_pedido" SERIAL PRIMARY KEY,
   "pedido_id" INTEGER NOT NULL,
   "produto_id" INTEGER NOT NULL
 );
 
-CREATE TABLE "produto" (
+CREATE TABLE IF NOT EXISTS "produto" (
   "id_produto" SERIAL PRIMARY KEY,
   "nome" VARCHAR(50) NOT NULL,
   "descricao" VARCHAR(200) NOT NULL,
@@ -72,12 +72,12 @@ CREATE TABLE "produto" (
   "secao_id" INTEGER NOT NULL
 );
 
-CREATE TABLE "secao" (
+CREATE TABLE IF NOT EXISTS "secao" (
   "id_secao" SERIAL PRIMARY KEY,
   "nome" VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE "desconto" (
+CREATE TABLE IF NOT EXISTS "desconto" (
   "id_desconto" SERIAL PRIMARY KEY,
   "produto_id" INTEGER NOT NULL,
   "valor_desconto" INTEGER NOT NULL,
