@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS "desconto" (
 -- ##########################################################################################################################################################
 
 
-ALTER TABLE "funcionario" ADD CONSTRAINT "fk_usuario" FOREIGN KEY ("id_usuario") REFERENCES "usuario" ("id_usuario");
+ALTER TABLE "cargo" ADD CONSTRAINT "fk_usuario" FOREIGN KEY ("id_usuario") REFERENCES "usuario" ("id_usuario");
 
 ALTER TABLE "usuario" ADD CONSTRAINT "fk_comanda_cliente" FOREIGN KEY ("comanda_id") REFERENCES "comanda" ("id_comanda");
 
