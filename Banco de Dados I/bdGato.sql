@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS "cargo" (
   "id_cargo" INTEGER PRIMARY KEY,
   "cargo" VARCHAR(30) NOT NULL,
   "id_usuario" INTEGER NOT NULL,
-  "status" BOOLEAN,
+  "status" BOOLEAN
 
 );
 
