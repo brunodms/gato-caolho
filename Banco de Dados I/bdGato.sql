@@ -110,15 +110,70 @@ ALTER TABLE "desconto" ADD CONSTRAINT "fk_desconto_produto" FOREIGN KEY ("produt
 -- ##########################################################################################################################################################
 insert into cargo (id_cargo, cargo) values 
                   (1, 'Gerente'), 
-                  (2, 'Funcionário'),
+                  (2, 'atendente'),
                   (3, 'Cliente');
 
-insert into usuario (nome, cpf, senha, email, cargo_id, status, comanda_id) values 
-                    ('Julia', '662.929.240-50', 'senhavalida', 'juju@gmail.com', 3, true, null),
-                    ('Gatinha Comunista', '571.049.780-03', 'senhavalida', 'gata@gmail.com', 3, true, null),
-                    ('Bruno', '172.336.570-09', 'senhavalida', 'brunao@gmail.com', 1, true, null),
-                    ('Fran', '001.720.750-92', 'senhavalida', 'fran@gmail.com', 2, true, null);
+insert into comanda (id_comanda) select * from generate_series(1,100);
 
-insert into telefone  (usuario_id, telefone) values 
-                      (1, 48984468381),
-											(2, 99999999999);
+INSERT INTO "usuario" (nome, cpf, senha, email,telefone, cargo_id, status, comanda_id) VALUES 
+('Alfred Silva', '123.456.789-00', 'senha123', 'alice.silva@example.com', 49987654321, 1, TRUE, 1),
+('Bruno Souza', '987.654.321-00', 'senha123', 'bruno.souza@example.com', 54987654322, 3, TRUE, 2),
+('Carla Mendes', '456.789.123-00', 'senha123', 'carla.mendes@example.com',49987654323, 2, FALSE, NULL),
+('Daniel Rocha', '789.123.456-00', 'senha123', 'daniel.rocha@example.com', 11987654324, 3, TRUE, 3);
+
+
+INSERT INTO "secao" (nome) VALUES
+('Hambúrgueres'),
+('Pizzas'),
+('Bebidas'),
+('Sobremesas');
+
+INSERT INTO "produto" (nome, descricao, unidade_medida, valor, marca, secao_id) VALUES
+('Burguer Gato Caolho', 'Hambúrguer com queijo, alface e tomate', 'UN', 20.00, 'gato caolho', 1),
+('Burguer Gato Persa', 'Hambúrguer com queijo e bacon', 'UN', 24.00, 'Marca B', 1),
+('Brisa da Manha', 'Chopp', '350ml', 12.00, 'Artesanal', 3),
+('Pizza Calabresa', 'Pizza com calabresa e cebola', 'G', 60.00, 'Marca D', 2);
+
+
+INSERT INTO "desconto" (produto_id, valor_desconto, descricao, data_inicial, data_final, hora_inicial, hora_final) VALUES
+(1, 5, 'Desconto de 5 r no Gato Caolho', '2024-06-24', '2024-06-25', '12:00:00', '14:00:00'),
+(2, 5, 'Desconto de 5 r no Gato Persa', '2024-06-24', '2024-06-25', '13:00:00', '15:00:00'),
+(3, 3, 'Desconto de 3 r no chopp BA', '2024-06-24', '2024-06-25', '14:00:00', '16:00:00'),
+(4, 10, 'Desconto de 8 r na Pizza', '2024-06-24', '2024-06-25', '15:00:00', '17:00:00');
+
+INSERT INTO "pedido" (comanda_id, mesa, valor, status, data_pedido, hora_pedido) VALUES
+(1, 1, 5000, TRUE, '2024-06-24', '12:30:00'),
+(2, 2, 7000, TRUE, '2024-06-24', '13:45:00'),
+(3, 3, 9000, FALSE, '2024-06-24', '14:00:00'),
+(4, 4, 11000, TRUE, '2024-06-24', '15:20:00');
+
+INSERT INTO "item_pedido" (pedido_id, produto_id) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(2, 4);
+
+
+INSERT INTO "venda" (comanda_id, forma_pagamento_id, data_venda, hora_venda) VALUES
+(1, 1, '2024-06-24', '12:30:00'),
+(2, 2, '2024-06-24', '13:45:00'),
+(3, 3, '2024-06-24', '14:00:00'),
+(4, 1, '2024-06-24', '15:20:00');
+
+INSERT INTO "forma_pagamento" (nome, status) VALUES
+('Dinheiro', TRUE),
+('Cartão de Crédito', TRUE),
+('Cartão de Débito', TRUE),
+('Pix', TRUE);
+
+
+INSERT INTO venda (comanda_id, forma_pagamento_id, data_venda, hora_venda)
+VALUES (1, 1, '2024-06-24', '12:30:00');
+INSERT INTO venda (comanda_id, forma_pagamento_id, data_venda, hora_venda)
+VALUES (2, 2, '2024-06-24', '13:45:00');
+INSERT INTO venda (comanda_id, forma_pagamento_id, data_venda, hora_venda)
+VALUES (3, 3, '2024-06-24', '14:00:00');
+INSERT INTO venda (comanda_id, forma_pagamento_id, data_venda, hora_venda)
+VALUES (4, 1, '2024-06-24', '15:20:00');
+
+
