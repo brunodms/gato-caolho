@@ -12,5 +12,6 @@
 </br>
 
 # :pushpin: Conteúdo até agora
-- Engenharia de Software: pasta com requisitos, diagramas e descrições de necessidades
-- Banco de Dados 1: pasta com Modelo Conceitual e Modelo Relacional em código
+- Engenharia de Software: pasta com requisitos (funcionais e não funcionais), diagramas, descrições de necessidades entre outros (documentação completa)
+- Banco de Dados 1: pasta com Modelo Conceitual, lógico relacional e em código
+- Prog 2: Pasta com o projeto em código sendo implementado em React
