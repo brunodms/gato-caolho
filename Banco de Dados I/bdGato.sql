@@ -12,15 +12,10 @@ CREATE TABLE IF NOT EXISTS "usuario" (
   "cpf" VARCHAR(18) NOT NULL UNIQUE,
   "senha" VARCHAR(100) NOT NULL,
   "email" VARCHAR(256) NOT NULL,
+  "telefone" BIGINT,
   "cargo_id" INTEGER NOT NULL,
   "status" BOOLEAN,
   "comanda_id" INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS "telefone" (
-  "id_telefone" SERIAL PRIMARY KEY,
-  "usuario_id" INTEGER NOT NULL,
-  "telefone" BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "cargo" (
