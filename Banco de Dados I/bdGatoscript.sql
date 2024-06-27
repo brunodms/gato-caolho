@@ -1,134 +1,3 @@
-set datestyle to 'ISO,DMY';
-
--- ##########################################################################################################################################################
--- CREATE TABLES
--- ##########################################################################################################################################################
-CREATE TABLE IF NOT EXISTS "usuario" (
-  "id_usuario" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(100) NOT NULL,
-  "cpf" VARCHAR(20) NOT NULL,
-  "senha" VARCHAR(100) NOT NULL,
-  "email" VARCHAR(256) NOT NULL,
-  "telefone" BIGINT NOT NULL,
-  "id_cargo" INTEGER NOT NULL,
-  "status" BOOLEAN,
-  "id_comanda" INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS "cargo" (
-  "id_cargo" INTEGER PRIMARY KEY,
-  "cargo" VARCHAR(30) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "comanda" (
-  "id_comanda" SERIAL PRIMARY KEY
-);
-
-CREATE TABLE IF NOT EXISTS "venda" (
-  "id_venda" SERIAL PRIMARY KEY,
-  "id_comanda" INTEGER NOT NULL,
-  "id_forma_pagamento" INTEGER NOT NULL,
-  "data_venda" DATE NOT NULL,
-  "hora_venda" TIME NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "forma_pagamento" (
-  "id_forma_pagamento" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(20) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "pedido" (
-  "id_pedido" SERIAL PRIMARY KEY,
-  "id_comanda" INTEGER NOT NULL,
-  "mesa" INTEGER NOT NULL,
-  "valor" INTEGER NOT NULL,
-  "status" BOOLEAN NOT NULL,
-  "data_pedido" DATE NOT NULL,
-  "hora_pedido" TIME NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "item_pedido" (
-    "id_item_pedido" SERIAL PRIMARY KEY,
-    "id_pedido" INTEGER
-    "id_produto" INTEGER
-    "quantidade" INTEGER NOT NULL,
-    "preco_unitario" numeric(10, 2) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "produto" (
-  "id_produto" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(50) NOT NULL,
-  "descricao" VARCHAR(200) NOT NULL,
-  "valor" money NOT NULL,
-  "marca" VARCHAR(15),
-  "id_secao" INTEGER NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "secao" (
-  "id_secao" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS "desconto" (
-  "id_desconto" SERIAL PRIMARY KEY,
-  "id_produto" INTEGER NOT NULL,
-  "valor_desconto" money NOT NULL,
-  "descricao" VARCHAR(200),
-  "data_inicial" DATE,
-  "data_final" DATE,
-  "hora_inicial" TIME,
-  "hora_final" TIME
-);
-
--- ##########################################################################################################################################################
--- FOREIGN KEYS
--- ##########################################################################################################################################################
-
-ALTER TABLE "usuario" ADD CONSTRAINT "fk_cargo_funcionario" FOREIGN KEY ("id_cargo") REFERENCES "cargo" ("id_cargo");
-
-ALTER TABLE "usuario" ADD CONSTRAINT "fk_comanda_cliente" FOREIGN KEY ("id_comanda") REFERENCES "comanda" ("id_comanda");
-
-ALTER TABLE "venda" ADD CONSTRAINT "fk_venda_comanda" FOREIGN KEY ("id_comanda") REFERENCES "comanda" ("id_comanda");
-
-ALTER TABLE "venda" ADD CONSTRAINT "fk_venda_forma_pagamento" FOREIGN KEY ("id_forma_pagamento") REFERENCES "forma_pagamento" ("id_forma_pagamento");
-
-ALTER TABLE "pedido" ADD CONSTRAINT "fk_pedido_comanda" FOREIGN KEY ("id_comanda") REFERENCES "comanda" ("id_comanda");
-
-ALTER TABLE "item_pedido" ADD CONSTRAINT "fk_item_pedido_pedido" FOREIGN KEY ("id_pedido") REFERENCES "pedido" ("id_pedido");
-
-ALTER TABLE "item_pedido" ADD CONSTRAINT "fk_item_pedido_produto" FOREIGN KEY ("id_produto") REFERENCES "produto" ("id_produto");
-
-ALTER TABLE "produto" ADD CONSTRAINT "fk_produto_secao" FOREIGN KEY ("id_secao") REFERENCES "secao" ("id_secao");
-
-ALTER TABLE "desconto" ADD CONSTRAINT "fk_desconto_produto" FOREIGN KEY ("id_produto") REFERENCES "produto" ("id_produto");
-
--- ##########################################################################################################################################################
--- Triggers
--- ##########################################################################################################################################################
-
-CREATE OR REPLACE FUNCTION criar_comanda_para_cliente()
-RETURNS TRIGGER AS $$
-DECLARE
-    new_id_comanda INTEGER;
-BEGIN
-    -- Verificar se o id_cargo é 3
-    IF NEW.id_cargo = 3 THEN
-        -- Inserir uma nova comanda e obter o id_comanda gerado
-        INSERT INTO comanda DEFAULT VALUES RETURNING id_comanda INTO new_id_comanda;
-
-        -- Atualizar o id_comanda do novo usuário
-		UPDATE usuario SET id_comanda = new_id_comanda WHERE id_usuario = NEW.id_usuario;
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER after_usuario_insert
-AFTER INSERT ON usuario
-FOR EACH ROW
-EXECUTE FUNCTION criar_comanda_para_cliente();
-
 -- ##########################################################################################################################################################
 -- INSERTS
 -- ##########################################################################################################################################################
@@ -140,18 +9,6 @@ insert into cargo (id_cargo, cargo) values
 
 insert into comanda (id_comanda) select * from generate_series(1,100);
 
--- Verificar a sequência atual
-SELECT last_value FROM comanda_id_comanda_seq;
-
--- Ajustar a sequência para o maior valor na tabela comanda
-SELECT setval('comanda_id_comanda_seq', (SELECT MAX(id_comanda) FROM comanda));
-
-insert into usuario (nome, cpf, senha, email, telefone, id_cargo, status) values 
-                    ('Julia', '662.929.240-50', 'senhavalida', 'juju@gmail.com', 49938768385, 3, true),
-                    ('Gatinha Comunista', '571.049.780-03', 'senhavalida', 'gata@gmail.com',97933515513, 3, true),
-                    ('Bruno', '172.336.570-09', 'senhavalida', 'brunao@gmail.com',62323278913 , 1, true),
-                    ('Fran', '001.720.750-92', 'senhavalida', 'fran@gmail.com',12345678910 , 2, true);
-
 INSERT INTO "secao" (nome) VALUES
 ('Baguete'),
 ('Burguers'),
@@ -162,21 +19,49 @@ INSERT INTO "secao" (nome) VALUES
 ('Pizza'),
 ('Porção');
 
-INSERT INTO "produto" (nome, descricao, unidade_medida, valor, marca, id_secao) VALUES
-('Burguer Gato Caolho', 'Hambúrguer com queijo, alface e tomate', 'UN', 20.00, 'Gato Caolho', 2),
-('Burguer Gato Persa', 'Hambúrguer com queijo e bacon', 'UN', 24.00, 'Gato Caolho', 2),
-('Brisa da Manha', 'Chopp', '350ml', 12.00, 'Artesanal', 4),
-('Pizza Calabresa', 'Pizza com calabresa e cebola', 'G', 60.00, 'Marca D', 7);
-
-INSERT INTO "desconto" (id_produto, valor_desconto, descricao, data_inicial, data_final, hora_inicial, hora_final) VALUES
-(1, 5.00, 'Desconto de 5 r no Gato Caolho', '2024-06-24', '2024-06-25', '12:00:00', '14:00:00'),
-(2, 5.25, 'Desconto de 5 r no Gato Persa', '2024-06-24', '2024-06-25', '13:00:00', '15:00:00'),
-(3, 3.50, 'Desconto de 3 r no chopp BA', '2024-06-24', '2024-06-25', '14:00:00', '16:00:00'),
-(4, 10.50, 'Desconto de 8 r na Pizza', '2024-06-24', '2024-06-25', '15:00:00', '17:00:00');
-
 INSERT INTO "forma_pagamento" (nome) VALUES
 ('Dinheiro'),
 ('Cartão de Crédito'),
 ('Cartão de Débito'),
 ('Pix'),
 ('Fiado');
+
+-- Verificar a sequência atual
+SELECT last_value FROM comanda_id_comanda_seq;
+
+-- Ajustar a sequência para o maior valor na tabela comanda
+SELECT setval('comanda_id_comanda_seq', (SELECT MAX(id_comanda) FROM comanda));
+
+insert into usuario (nome, cpf, senha, email, telefone, id_cargo, data_admissao, status) values 
+                    ('Julia', '662.929.240-50', 'senhavalida', 'juju@gmail.com', 49938768385, 3, '2024-03-12', true),
+                    ('Gatinha Comunista', '571.049.780-03', 'senhavalida', 'gata@gmail.com',97933515513, 3, '2024-02-25', true),
+                    ('Bruno', '172.336.570-09', 'senhavalida', 'brunao@gmail.com',62323278913 , 1, '2024-01-28', true),
+                    ('Fran', '001.720.750-92', 'senhavalida', 'fran@gmail.com',12345678910 , 2, '2024-04-21', true);
+
+INSERT INTO "produto" (nome, descricao, valor, marca, unidade_medida, id_secao) VALUES
+('Burguer Gato Caolho', 'Hambúrguer com queijo, alface e tomate', 20.00, 'Gato Caolho', 'UN', 2),
+('Burguer Gato Persa', 'Hambúrguer com queijo e bacon', 24.00, 'Gato Caolho', 'UN', 2),
+('Brisa da Manha', 'Chopp', 12.00, 'Artesanal', '350ml', 4),
+('Pizza Calabresa', 'Pizza com calabresa e cebola', 60.00, 'Marca D', 'G', 7);
+
+INSERT INTO "desconto" (id_produto, valor_desconto, descricao, data_inicial, data_final, hora_inicial, hora_final) VALUES
+(1, 5.00, 'Desconto de 5 r no Gato Caolho', '2024-06-25', '2024-06-30', '11:00:00', '13:00:00'),
+(2, 5.25, 'Desconto de 5 r no Gato Persa', '2024-06-25', '2024-06-30', '11:00:00', '13:00:00'),
+(3, 3.50, 'Desconto de 3 r no chopp BA', '2024-06-25', '2024-06-30', '11:00:00', '13:00:00'),
+(4, 10.50, 'Desconto de 8 r na Pizza', '2024-06-25', '2024-06-30', '11:00:00', '13:00:00');
+
+
+INSERT INTO "pedido" (id_comanda, mesa, status, data_pedido, hora_pedido)
+VALUES
+    (1, 13, 'Em andamento', '2024-06-28', '12:30:00'),
+    (2, 11, 'Cancelado', '2024-06-28', '12:30:00'),
+    (3, 12, 'Concluido', '2024-06-28', '12:30:00');
+
+INSERT INTO item_pedido (id_pedido, id_produto, quantidade)
+VALUES
+    (1, 1, 2),
+    (1, 4, 1),
+    (2, 2, 1),
+    (2, 4, 1);
+
+select * from item_pedido;

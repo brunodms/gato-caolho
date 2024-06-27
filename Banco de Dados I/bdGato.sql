@@ -12,9 +12,10 @@ CREATE TABLE IF NOT EXISTS "usuario" (
   "senha" VARCHAR(100) NOT NULL,
   "email" VARCHAR(256) NOT NULL,
   "telefone" BIGINT NOT NULL,
-  "cargo_id" INTEGER NOT NULL,
+  "id_cargo" INTEGER NOT NULL,
+  "data_admissao" DATE NOT NULL,
   "status" BOOLEAN,
-  "comanda_id" INTEGER
+  "id_comanda" INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS "cargo" (
@@ -28,42 +29,45 @@ CREATE TABLE IF NOT EXISTS "comanda" (
 
 CREATE TABLE IF NOT EXISTS "venda" (
   "id_venda" SERIAL PRIMARY KEY,
-  "comanda_id" INTEGER NOT NULL,
-  "forma_pagamento_id" INTEGER NOT NULL,
+  "id_comanda" INTEGER NOT NULL,
+  "id_forma_pagamento" INTEGER NOT NULL,
+  "valor_total" NUMERIC(10, 2) NOT NULL,
+  "valor_pago" NUMERIC(10, 2),
   "data_venda" DATE NOT NULL,
   "hora_venda" TIME NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "forma_pagamento" (
   "id_forma_pagamento" SERIAL PRIMARY KEY,
-  "nome" VARCHAR(20) NOT NULL,
-  "status" BOOLEAN NOT NULL
+  "nome" VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "pedido" (
   "id_pedido" SERIAL PRIMARY KEY,
-  "comanda_id" INTEGER NOT NULL,
+  "id_comanda" INTEGER NOT NULL,
   "mesa" INTEGER NOT NULL,
-  "valor" INTEGER NOT NULL,
-  "status" BOOLEAN NOT NULL,
+  "status" VARCHAR(20) NOT NULL,
+  "valor_total" NUMERIC(10,2),
   "data_pedido" DATE NOT NULL,
   "hora_pedido" TIME NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "item_pedido" (
-  "id_item_pedido" SERIAL PRIMARY KEY,
-  "pedido_id" INTEGER NOT NULL,
-  "produto_id" INTEGER NOT NULL
+    "id_item_pedido" SERIAL PRIMARY KEY,
+    "id_pedido" INTEGER NOT NULL,
+    "id_produto" INTEGER NOT NULL,
+    "valor" NUMERIC(10, 2) NOT NULL,
+    "quantidade" INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "produto" (
   "id_produto" SERIAL PRIMARY KEY,
   "nome" VARCHAR(50) NOT NULL,
   "descricao" VARCHAR(200) NOT NULL,
-  "unidade_medida" VARCHAR(5) NOT NULL,
-  "valor" money NOT NULL,
-  "marca" VARCHAR(15),
-  "secao_id" INTEGER NOT NULL
+  "valor" NUMERIC(10, 2) NOT NULL,
+  "marca" VARCHAR(20),
+  "unidade_medida" VARCHAR(10) NOT NULL,
+  "id_secao" INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "secao" (
@@ -73,8 +77,8 @@ CREATE TABLE IF NOT EXISTS "secao" (
 
 CREATE TABLE IF NOT EXISTS "desconto" (
   "id_desconto" SERIAL PRIMARY KEY,
-  "produto_id" INTEGER NOT NULL,
-  "valor_desconto" money NOT NULL,
+  "id_produto" INTEGER NOT NULL,
+  "valor_desconto" NUMERIC(10, 2) NOT NULL,
   "descricao" VARCHAR(200),
   "data_inicial" DATE,
   "data_final" DATE,
@@ -86,76 +90,126 @@ CREATE TABLE IF NOT EXISTS "desconto" (
 -- FOREIGN KEYS
 -- ##########################################################################################################################################################
 
-ALTER TABLE "usuario" ADD CONSTRAINT "fk_cargo_funcionario" FOREIGN KEY ("cargo_id") REFERENCES "cargo" ("id_cargo");
+ALTER TABLE "usuario" ADD CONSTRAINT "fk_cargo_usuario" FOREIGN KEY ("id_cargo") REFERENCES "cargo" ("id_cargo");
 
-ALTER TABLE "usuario" ADD CONSTRAINT "fk_comanda_cliente" FOREIGN KEY ("comanda_id") REFERENCES "comanda" ("id_comanda");
+ALTER TABLE "usuario" ADD CONSTRAINT "fk_comanda_usuario" FOREIGN KEY ("id_comanda") REFERENCES "comanda" ("id_comanda");
 
-ALTER TABLE "venda" ADD CONSTRAINT "fk_venda_comanda" FOREIGN KEY ("comanda_id") REFERENCES "comanda" ("id_comanda");
+ALTER TABLE "venda" ADD CONSTRAINT "fk_venda_comanda" FOREIGN KEY ("id_comanda") REFERENCES "comanda" ("id_comanda");
 
-ALTER TABLE "venda" ADD CONSTRAINT "fk_venda_forma_pagamento" FOREIGN KEY ("forma_pagamento_id") REFERENCES "forma_pagamento" ("id_forma_pagamento");
+ALTER TABLE "venda" ADD CONSTRAINT "fk_venda_forma_pagamento" FOREIGN KEY ("id_forma_pagamento") REFERENCES "forma_pagamento" ("id_forma_pagamento");
 
-ALTER TABLE "pedido" ADD CONSTRAINT "fk_pedido_comanda" FOREIGN KEY ("comanda_id") REFERENCES "comanda" ("id_comanda");
+ALTER TABLE "pedido" ADD CONSTRAINT "fk_pedido_comanda" FOREIGN KEY ("id_comanda") REFERENCES "comanda" ("id_comanda");
 
-ALTER TABLE "item_pedido" ADD CONSTRAINT "fk_item_pedido_pedido" FOREIGN KEY ("pedido_id") REFERENCES "pedido" ("id_pedido");
+ALTER TABLE "item_pedido" ADD CONSTRAINT "fk_item_pedido_pedido" FOREIGN KEY ("id_pedido") REFERENCES "pedido" ("id_pedido");
 
-ALTER TABLE "item_pedido" ADD CONSTRAINT "fk_item_pedido_produto" FOREIGN KEY ("produto_id") REFERENCES "produto" ("id_produto");
+ALTER TABLE "item_pedido" ADD CONSTRAINT "fk_item_pedido_produto" FOREIGN KEY ("id_produto") REFERENCES "produto" ("id_produto");
 
-ALTER TABLE "produto" ADD CONSTRAINT "fk_produto_secao" FOREIGN KEY ("secao_id") REFERENCES "secao" ("id_secao");
+ALTER TABLE "produto" ADD CONSTRAINT "fk_produto_secao" FOREIGN KEY ("id_secao") REFERENCES "secao" ("id_secao");
 
-ALTER TABLE "desconto" ADD CONSTRAINT "fk_desconto_produto" FOREIGN KEY ("produto_id") REFERENCES "produto" ("id_produto");
-
+ALTER TABLE "desconto" ADD CONSTRAINT "fk_desconto_produto" FOREIGN KEY ("id_produto") REFERENCES "produto" ("id_produto");
 
 -- ##########################################################################################################################################################
 -- Triggers
 -- ##########################################################################################################################################################
 
--- RODAR UM POR VEZ
 CREATE OR REPLACE FUNCTION criar_comanda_para_cliente()
 RETURNS TRIGGER AS $$
 DECLARE
-    new_comanda_id INTEGER;
+    new_id_comanda INTEGER;
 BEGIN
-    -- Verificar se o cargo_id é 3
-    IF NEW.cargo_id = 3 THEN
+    -- Verificar se o id_cargo é 3
+    IF NEW.id_cargo = 3 THEN
         -- Inserir uma nova comanda e obter o id_comanda gerado
-        INSERT INTO comanda DEFAULT VALUES RETURNING id_comanda INTO new_comanda_id;
+        INSERT INTO comanda DEFAULT VALUES RETURNING id_comanda INTO new_id_comanda;
 
-        -- Atualizar o comanda_id do novo usuário
-		UPDATE usuario SET comanda_id = new_comanda_id WHERE id_usuario = NEW.id_usuario;
+        -- Atualizar o id_comanda do novo usuário
+		UPDATE usuario SET id_comanda = new_id_comanda WHERE id_usuario = NEW.id_usuario;
     END IF;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- RODAR UM POR VEZ
 CREATE TRIGGER after_usuario_insert
 AFTER INSERT ON usuario
 FOR EACH ROW
 EXECUTE FUNCTION criar_comanda_para_cliente();
 
--- RODAR UM POR VEZ ESSES 2 APÓS CRIAR AS 100 COMANDAS PADRÃO
--- Verificar a sequência atual
-SELECT last_value FROM comanda_id_comanda_seq;
-
--- RODAR UM POR VEZ
--- Ajustar a sequência para o maior valor + 1 na tabela comanda
-SELECT setval('comanda_id_comanda_seq', (SELECT MAX(id_comanda) FROM comanda) + 1);
-
-
 -- ##########################################################################################################################################################
--- INSERTS
--- ##########################################################################################################################################################
-insert into cargo (id_cargo, cargo) values 
-                  (1, 'Gerente'), 
-                  (2, 'Funcionário'),
-                  (3, 'Cliente');
 
-insert into comanda (id_comanda) select * from generate_series(1,100);
+CREATE OR REPLACE FUNCTION set_preco_unitario_com_desconto()
+RETURNS TRIGGER AS $$
+DECLARE
+  v_desconto_aplicavel NUMERIC(10, 2);
+  v_data_pedido DATE;
+  v_hora_pedido TIME;
+BEGIN
+  -- Obter a data e hora do pedido
+  SELECT p.data_pedido, p.hora_pedido INTO v_data_pedido, v_hora_pedido
+  FROM pedido p
+  WHERE p.id_pedido = NEW.id_pedido;
+  
+  -- Atribuir o valor do produto ao campo preco_unitario
+  NEW.valor := (SELECT pr.valor FROM produto pr WHERE pr.id_produto = NEW.id_produto);
+  
+  -- Verificar se existe um desconto válido para o produto
+  SELECT d.valor_desconto INTO v_desconto_aplicavel
+  FROM desconto d
+  WHERE d.id_produto = NEW.id_produto
+    AND (d.data_inicial IS NULL OR d.data_inicial <= v_data_pedido)
+    AND (d.data_final IS NULL OR d.data_final >= v_data_pedido)
+    AND (d.hora_inicial IS NULL OR d.hora_inicial <= v_hora_pedido)
+    AND (d.hora_final IS NULL OR d.hora_final >= v_hora_pedido)
+  LIMIT 1;
+  
+  -- Se existir um desconto aplicável, ajustar o preco_unitario
+  IF v_desconto_aplicavel IS NOT NULL THEN
+    NEW.valor := NEW.valor - v_desconto_aplicavel;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER before_insert_item_pedido
+BEFORE INSERT ON item_pedido
+FOR EACH ROW
+EXECUTE FUNCTION set_preco_unitario_com_desconto();
+
+-- Função para atualizar o valor_total na tabela pedido
+CREATE OR REPLACE FUNCTION atualizar_valor_total_pedido()
+RETURNS TRIGGER AS $$
+DECLARE
+	v_valor_total NUMERIC(10, 2);
+BEGIN
+	SELECT calcular_valor_total_pedido(NEW.id_pedido) INTO v_valor_total;
+
+    -- Atualizar o valor total do pedido
+    UPDATE pedido
+    SET valor_total = v_valor_total
+    WHERE id_pedido = NEW.id_pedido;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger para chamar a função após inserir um item na tabela item_pedido
+CREATE TRIGGER after_insert_item_pedido
+AFTER INSERT ON item_pedido
+FOR EACH ROW
+EXECUTE FUNCTION atualizar_valor_total_pedido();
 
 
-insert into usuario (nome, cpf, senha, email, telefone, cargo_id, status) values 
-                    ('Julia', '662.929.240-50', 'senhavalida', 'juju@gmail.com', 49938768385, 3, true),
-                    ('Gatinha Comunista', '571.049.780-03', 'senhavalida', 'gata@gmail.com',97933515513, 3, true),
-                    ('Bruno', '172.336.570-09', 'senhavalida', 'brunao@gmail.com',62323278913 , 1, true),
-                    ('Fran', '001.720.750-92', 'senhavalida', 'fran@gmail.com',12345678910 , 2, true);
+CREATE OR REPLACE FUNCTION calcular_valor_total_pedido(pedido_id INTEGER)
+RETURNS NUMERIC(10, 2) AS $$
+DECLARE
+  v_valor_total NUMERIC(10, 2);
+BEGIN
+  SELECT SUM(ip.valor * ip.quantidade)
+  INTO v_valor_total
+  FROM item_pedido ip
+  WHERE ip.id_pedido = pedido_id;
+
+  RETURN v_valor_total;
+END;
+$$ LANGUAGE plpgsql;
