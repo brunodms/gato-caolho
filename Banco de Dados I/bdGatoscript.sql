@@ -61,7 +61,10 @@ INSERT INTO item_pedido (id_pedido, id_produto, quantidade)
 VALUES
     (1, 1, 2),
     (1, 4, 1),
-    (2, 2, 1),
-    (2, 4, 1);
+    (2, 3, 1),
+    (2, 4, 1)
+    (3, 1, 2),
+    (3, 2, 1),
+    (3, 4, 1),;
 
 select * from item_pedido;
