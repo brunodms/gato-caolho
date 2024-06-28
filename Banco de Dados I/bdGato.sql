@@ -8,14 +8,14 @@ set datestyle to 'ISO,DMY';
 CREATE TABLE IF NOT EXISTS "usuario" (
   "id_usuario" SERIAL PRIMARY KEY,
   "nome" VARCHAR(100) NOT NULL,
-  "cpf" VARCHAR(20) NOT NULL,
+  "cpf" VARCHAR(20) NOT NULL UNIQUE,
   "senha" VARCHAR(100) NOT NULL,
   "email" VARCHAR(256) NOT NULL,
   "telefone" BIGINT NOT NULL,
   "id_cargo" INTEGER NOT NULL,
   "data_admissao" DATE NOT NULL,
   "status" BOOLEAN,
-  "id_comanda" INTEGER
+  "id_comanda" INTEGER UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS "cargo" (
