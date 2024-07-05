@@ -13,6 +13,9 @@ const jwt = require('jsonwebtoken');
 // Requisições de mais de uma origem
 const cors = require('cors');
 
+require('dotenv').config();
+console.log(process.env)
+
 // Inicializa o servidor na porta 5000
 const app = express();
 const PORT = 5000; 
