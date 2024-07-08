@@ -76,7 +76,8 @@ const Login = ({ onLoginSuccess }) => {
 
     try {
       const response = await postLogin(data);
-      onLoginSuccess(response);
+      //onLoginSuccess(response);
+      console.log(response);
     } catch (error) {
       console.log("erro ao logar", error);
     }
