@@ -8,7 +8,7 @@
     "start:client": "cd auth-client && npm run dev"
   },
   "devDependencies": {
-    "concurrently": "^7.0.0"
+    "concurrently": "^7.6.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -16,5 +16,10 @@
     "cors": "^2.8.5",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0"
-  }
+  },
+  "description": "npm init -y\r mkdir auth-system\r cd .\\auth-system\\\r npm i express express-session\r npm i passport-local\r npm i passport-jwt\r npm i passport\r npm i bcryptjs\r npm i body-parser\r npm i cors\r cd ..\r npm create vite@latest\r cd .\\auth-client\\\r npm i axios react-router-dom\r npm i @mui/material @emotion/react @emotion/styled\r npm i @fontsource/roboto\r npm i @mui/icons-material\r npm i\r voltar para root\r npm i -D concurrently",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

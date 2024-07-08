@@ -1,10 +1,9 @@
-async function postLogin(data){
-    const response = await fetch('http://localhost:8080/login', {
-        method: 'POST',
+async function getSecao(){
+    const response = await fetch('http://localhost:8080/secao', {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
     });
     if (!response.ok) {
         const error = await response.json();
@@ -13,4 +12,4 @@ async function postLogin(data){
     return await response.json();
 }
 
-export default postLogin;
+export default getSecao;

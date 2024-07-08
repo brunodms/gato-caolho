@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import User from '../models/Usuario';
 
 // Middleware que verifica se o usuário está logado
 export default async (req, res, next) => {
