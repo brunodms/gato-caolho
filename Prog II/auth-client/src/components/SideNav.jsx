@@ -31,7 +31,7 @@ const SideNav = () => {
           color="inherit"
           aria-label="open drawer"
           onClick={handleDrawerOpen}
-          sx={{ mr: 2 }}
+          sx={{ mr: 2, color: 'white' }}
         >
           <MenuIcon />
         </Button>
@@ -56,7 +56,18 @@ const SideNav = () => {
               },
         ]}
       >
-        <List style={{ marginTop: '50px' }}>
+        <Toolbar>
+        <Button
+          edge="start"
+          color="inherit"
+          aria-label="close drawer"
+          onClick={handleDrawerClose}
+          sx={{ mr: 2, color: 'white' }}
+        >
+           <MenuIcon />
+        </Button>
+        </Toolbar>
+        <List>
           <ListItem button>
             <ListItemText primary="Adicionar produtos" style={{ color: 'white' }} />
           </ListItem>
