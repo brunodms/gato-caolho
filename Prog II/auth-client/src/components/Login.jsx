@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { Button, createTheme } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import { Button, createTheme, TextField, Box, Stack } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import PropTypes from 'prop-types';
 
@@ -24,7 +21,7 @@ const Login = ({ onLoginSuccess }) => {
           styleOverrides: {
             outlined: {
               borderColor: "white",
-              backgroundColor: "purple",
+              backgroundColor: "#6C0B8C",
               color: "white",
               "&:hover": {
                 backgroundColor: "darkviolet",
