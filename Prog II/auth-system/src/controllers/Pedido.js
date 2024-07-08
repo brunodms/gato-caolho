@@ -15,7 +15,7 @@ class PedidoController {
 
   async relatorio_pedidos(req, res) {
     try {
-      const result = await pool.query("select pedido.id_pedido, usuario.nome, usuario.cpf, pedido.id_comanda, produto.nome FROM pedido JOIN item_pedido ON item_pedido.id_pedido = pedido.id_pedido JOIN usuario ON usuario.id_comanda = pedido.id_comanda JOIN produto ON produto.id_produto = item_pedido.id_produto");
+      const result = await pool.query("select pedido.id_pedido AS pedido, pedido.id_comanda AS comanda, usuario.nome AS cliente, usuario.cpf AS CPF, produto.nome AS produto FROM pedido JOIN item_pedido ON item_pedido.id_pedido = pedido.id_pedido JOIN usuario ON usuario.id_comanda = pedido.id_comanda JOIN produto ON produto.id_produto = item_pedido.id_produto");
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
