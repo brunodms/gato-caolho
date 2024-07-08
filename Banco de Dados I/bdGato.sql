@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "usuario" (
   "email" VARCHAR(256) NOT NULL,
   "telefone" BIGINT NOT NULL,
   "id_cargo" INTEGER NOT NULL,
-  "data_admissao" DATE NOT NULL,
+  "data_admissao" DATE,
   "status" BOOLEAN,
   "id_comanda" INTEGER UNIQUE
 );
