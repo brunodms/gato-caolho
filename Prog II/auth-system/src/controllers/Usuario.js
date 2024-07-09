@@ -80,7 +80,7 @@ class UsuarioController {
     try {
         const { id } = req.params;
 
-        const result = await pool.query("DELETE FROM usuario WHERE id = $1", [id]);
+        const result = await pool.query("DELETE FROM usuario WHERE id_usuario = $1", [id]);
 
         if (result.rowCount === 0) {
             return res.status(404).json({ message: 'Usuário não encontrado.' });
