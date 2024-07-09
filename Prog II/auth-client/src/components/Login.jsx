@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import postLogin from "../service/postLogin";
 
+import Header from "./Header";
 const Login = ({ onLoginSuccess }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -76,8 +77,7 @@ const Login = ({ onLoginSuccess }) => {
 
     try {
       const response = await postLogin(data);
-      //onLoginSuccess(response);
-      console.log(response);
+      onLoginSuccess(response);
     } catch (error) {
       console.log("erro ao logar", error);
     }
@@ -100,6 +100,7 @@ const Login = ({ onLoginSuccess }) => {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
+        <Header title="Acessar gato caolho" />
         <TextField
           id='login_email'
           label="Email"
