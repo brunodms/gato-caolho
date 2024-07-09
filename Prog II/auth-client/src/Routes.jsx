@@ -7,11 +7,15 @@ import Login from './components/Login';
 import Cardapio from './components/Cardapio';
 import TestesIntegracao from './components/TestesIntegracao';
 
+const handleLoginSuccess = (response) => {
+    console.log("Login bem-sucedido", response);
+  };
+  
 const RoutesComponent = () => {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Login />} />
+        <Route exact path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/cardapio" element={<Cardapio />} />
         <Route path="/testes" element={<TestesIntegracao />} />
       </Routes>
