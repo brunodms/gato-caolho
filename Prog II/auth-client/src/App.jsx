@@ -1,14 +1,11 @@
-import Login from "./components/Login";
-import SideNav from "./components/SideNav";
-import "./App.css";
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
+import RoutesComponent from './Routes';
 
-function App() {
+const App = () => {
   return (
-    <main>
-      <Login />
-      <SideNav />
-    </main>
+        <RoutesComponent />
   );
-}
+};
 
 export default App;

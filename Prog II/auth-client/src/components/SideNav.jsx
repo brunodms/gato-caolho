@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { Link } from 'react-router-dom';
 import {
   Button,
   AppBar,
@@ -24,61 +25,68 @@ const SideNav = () => {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+    <AppBar
+      position="fixed"
+      sx={{ backgroundColor: "transparent", boxShadow: "none" }}
+    >
       <Toolbar>
         <Button
           edge="start"
           color="inherit"
           aria-label="open drawer"
           onClick={handleDrawerOpen}
-          sx={{ mr: 2, color: 'white' }}
+          sx={{ mr: 2, color: "white" }}
         >
           <MenuIcon />
         </Button>
       </Toolbar>
       <Drawer
         open={open}
-        onClose={handleDrawerClose} 
+        onClose={handleDrawerClose}
         sx={[
           {
-            '& .MuiDrawer-paper': {
-              backgroundColor: 'transparent',
+            "& .MuiDrawer-paper": {
+              backgroundColor: "transparent",
             },
           },
           open
             ? {
-                '--Drawer-transitionDuration': '0.4s',
-                '--Drawer-transitionFunction': 'cubic-bezier(0.79,0.14,0.15,0.86)',
+                "--Drawer-transitionDuration": "0.4s",
+                "--Drawer-transitionFunction":
+                  "cubic-bezier(0.79,0.14,0.15,0.86)",
               }
             : {
-                '--Drawer-transitionDuration': '0.2s',
-                '--Drawer-transitionFunction': 'cubic-bezier(0.77,0,0.18,1)',
+                "--Drawer-transitionDuration": "0.2s",
+                "--Drawer-transitionFunction": "cubic-bezier(0.77,0,0.18,1)",
               },
         ]}
       >
         <Toolbar>
-        <Button
-          edge="start"
-          color="inherit"
-          aria-label="close drawer"
-          onClick={handleDrawerClose}
-          sx={{ mr: 2, color: 'white' }}
-        >
-           <MenuIcon />
-        </Button>
+          <Button
+            edge="start"
+            color="inherit"
+            aria-label="close drawer"
+            onClick={handleDrawerClose}
+            sx={{ mr: 2, color: "white" }}
+          >
+            <MenuIcon />
+          </Button>
         </Toolbar>
         <List>
-          <ListItem button>
-            <ListItemText primary="Adicionar produtos" style={{ color: 'white' }} />
+          <ListItem button component={Link} to="/">
+            <ListItemText
+              primary="Adicionar produtos"
+              style={{ color: "white" }}
+            />
           </ListItem>
-          <ListItem button>
-            <ListItemText primary="Cardápio" style={{ color: 'white' }} />
+          <ListItem button component={Link} to="/cardapio">
+            <ListItemText primary="Cardápio" style={{ color: "white" }} />
           </ListItem>
-          <ListItem button>
-            <ListItemText primary="Promoções" style={{ color: 'white' }} />
+          <ListItem button component={Link} to="/promotions">
+            <ListItemText primary="Promoções" style={{ color: "white" }} />
           </ListItem>
-          <ListItem button>
-            <ListItemText primary="Usuários" style={{ color: 'white' }} />
+          <ListItem button component={Link} to="/testes">
+            <ListItemText primary="Usuários" style={{ color: "white" }} />
           </ListItem>
         </List>
       </Drawer>
