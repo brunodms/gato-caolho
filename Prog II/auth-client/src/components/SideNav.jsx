@@ -45,7 +45,7 @@ const SideNav = () => {
         sx={[
           {
             "& .MuiDrawer-paper": {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
             },
           },
           open

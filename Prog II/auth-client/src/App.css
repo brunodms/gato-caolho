@@ -4,3 +4,6 @@ body {
 .Button:login {
   border-color: white;
 }
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

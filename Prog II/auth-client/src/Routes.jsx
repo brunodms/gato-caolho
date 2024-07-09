@@ -15,7 +15,7 @@ const onLoginSuccess = (response) => {
 };
 
 const onRegisterSuccess = (response) => {
-  console.log("Login bem-sucedido", response);
+  console.log("Registro bem-sucedido", response);
   // Redirecionar ou outras ações pós-login
 };
 const RoutesComponent = () => {
