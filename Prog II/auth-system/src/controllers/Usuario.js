@@ -49,7 +49,7 @@ class UsuarioController {
     }
   }
 
-  async create(req, res) {
+  async create_cliente(req, res) {
     try {
         const { nome, cpf, senha, email, telefone } = req.body;
         const hashedPassword = await bcrypt.hash(senha, 10);
@@ -59,7 +59,40 @@ class UsuarioController {
         console.log(error);
         return res.status(400).json({ message: 'Erro ao registrar usuário.' });
     }
-}
+  }
+
+  async create_funcionario(req, res) {
+    try {
+        const { nome, cpf, senha, email, telefone } = req.body;
+        const hashedPassword = await bcrypt.hash(senha, 10);
+        const dataAdmissao = new Date().toISOString().slice(0, 10);
+        const status = true;
+        await pool.query("INSERT INTO usuario (nome, cpf, senha, email, telefone, id_cargo, data_admissao, status) VALUES ($1, $2, $3, $4, $5, 2, $6, $7)", 
+          [nome, cpf, hashedPassword, email, telefone, dataAdmissao, status]);
+        res.status(201).json({ message: 'Registro efetuado com sucesso!' });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ message: 'Erro ao registrar usuário.' });
+    }
+  }
+
+  async delete_usuario(req, res) {
+    try {
+        const { id } = req.params;
+
+        const result = await pool.query("DELETE FROM usuario WHERE id = $1", [id]);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'Usuário não encontrado.' });
+        }
+
+        res.status(200).json({ message: 'Usuário excluído com sucesso!' });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ message: 'Erro ao excluir usuário.' });
+    }
+  }
+
 }
 
 export default new UsuarioController();
