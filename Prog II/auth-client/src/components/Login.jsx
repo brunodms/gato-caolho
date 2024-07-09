@@ -1,70 +1,73 @@
-import { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import React, { useState } from 'react';
 import { Button, createTheme, TextField, Box, Stack } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import postLogin from "../service/postLogin";
-
 import Header from "./Header";
-const Login = ({ onLoginSuccess }) => {
-  const navigate = useNavigate();
+
+const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     senha: "",
   });
 
-  Login.propTypes = {
-    onLoginSuccess: PropTypes.func.isRequired,
+  const navigate = useNavigate();
+
+  const handleLoginSuccess = (response) => {
+    console.log("Login bem-sucedido", response);
+    navigate("/cardapio");
   };
 
   const basics = createTheme({
     components: {
-        MuiButton: {
-          styleOverrides: {
-            outlined: {
+      MuiButton: {
+        styleOverrides: {
+          outlined: {
+            borderColor: "white",
+            backgroundColor: "#6C0B8C",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "darkviolet",
               borderColor: "white",
-              backgroundColor: "#6C0B8C",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "darkviolet",
-                borderColor: "white",
-              },
-            },
-          },
-        },
-        MuiTextField: {
-          styleOverrides: {
-            root: {
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "white",
-                },
-                "&:hover fieldset": {
-                  borderColor: "white",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "white",
-                },
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-              },
-              "& .MuiInputBase-input": {
-                color: "white",
-              },
-              "& .MuiInputLabel-root": {
-                color: "white",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "white",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "white",
-              },
             },
           },
         },
       },
-    });
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
+              },
+              "&:hover fieldset": {
+                borderColor: "white",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
+              },
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+            },
+            "& .MuiInputBase-input": {
+              color: "white",
+            },
+            "& .MuiInputLabel-root": {
+              color: "white",
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "white",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "white",
+            },
+          },
+        },
+      },
+    },
+  });
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -76,11 +79,10 @@ const Login = ({ onLoginSuccess }) => {
       email: formData.email,
       senha: formData.senha,
     };
-    
+
     try {
       const response = await postLogin(data);
-      onLoginSuccess(response);
-      navigate('/cardapio');
+      handleLoginSuccess(response);
     } catch (error) {
       console.log("erro ao logar", error);
     }
@@ -124,18 +126,21 @@ const Login = ({ onLoginSuccess }) => {
           value={formData.senha}
           onChange={handleChange}
         />
-      </Box>
-
-      <Stack spacing={2} direction="row" sx={{
-        "& > :not(style)": { m: 1, width: "60%" },
-        justifyContent: "center"
+        <Stack spacing={2} direction="row" sx={{
+          "& > :not(style)": { m: 1, width: "60%" },
+          justifyContent: "center"
         }}>
-        <Button id='entrar' className="Button" variant="outlined" onClick={handleSubmit}>
-          Entrar
-        </Button>
-      </Stack>
+          <Button id='entrar' className="Button" variant="outlined" type="submit">
+            Entrar
+          </Button>
+        </Stack>
+      </Box>
     </ThemeProvider>
   );
+};
+
+Login.propTypes = {
+  onLoginSuccess: PropTypes.func.isRequired,
 };
 
 export default Login;
