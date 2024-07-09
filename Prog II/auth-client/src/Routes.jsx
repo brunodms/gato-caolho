@@ -1,23 +1,30 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import SideNav from './components/SideNav';
-import Login from './components/Login';
-import Cardapio from './components/Cardapio';
-import TestesIntegracao from './components/TestesIntegracao';
+import SideNav from "./components/SideNav";
+import Login from "./components/Login";
+import Cardapio from "./components/Cardapio";
+import TestesIntegracao from "./components/TestesIntegracao";
+import Register from "./components/Register";  // Importe o componente de registro
 
-const handleLoginSuccess = (response) => {
-    console.log("Login bem-sucedido", response);
-  };
-  
+const onLoginSuccess = (response) => {
+  console.log("Login bem-sucedido", response);
+  // Redirecionar ou outras ações pós-login
+};
+
+const onRegisterSuccess = (response) => {
+  console.log("Login bem-sucedido", response);
+  // Redirecionar ou outras ações pós-login
+};
 const RoutesComponent = () => {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+        <Route exact path="/" element={<Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path="/cardapio" element={<Cardapio />} />
         <Route path="/testes" element={<TestesIntegracao />} />
+        <Route path="/register" element={<Register onRegisterSuccess={onRegisterSuccess} />} />
       </Routes>
       <SideNav />
     </Router>

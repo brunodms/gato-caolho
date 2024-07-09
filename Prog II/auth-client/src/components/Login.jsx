@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { Button, createTheme, TextField, Box, Stack } from "@mui/material";
+import { Button, createTheme, TextField, Box, Stack, Divider } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,10 @@ const Login = () => {
   const handleLoginSuccess = (response) => {
     console.log("Login bem-sucedido", response);
     navigate("/cardapio");
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/register");  // Função para navegar para a tela de registro
   };
 
   const basics = createTheme({
@@ -128,16 +132,29 @@ const Login = () => {
         />
         <Stack spacing={2} direction="row" sx={{
           "& > :not(style)": { m: 1, width: "60%" },
-          justifyContent: "center"
+          justifyContent: "center",
         }}>
           <Button id='entrar' className="Button" variant="outlined" type="submit">
             Entrar
+          </Button>
+        </Stack>
+
+        <Divider sx={{ width: "80%", backgroundColor: "yellow", marginTop: 2, marginBottom: 2 }} />
+
+        <Stack spacing={2} direction="row" sx={{
+          "& > :not(style)": { m: 1, width: "60%" },
+          justifyContent: "center",
+          flexGrow: 1, // Add this line to push the stack to the bottom
+        }}>
+          <Button id='registro' className="Button" variant="outlined" type="submit" onClick={handleRegisterClick} sx={{ marginTop: 2 }}>
+            Registrar-se
           </Button>
         </Stack>
       </Box>
     </ThemeProvider>
   );
 };
+
 
 Login.propTypes = {
   onLoginSuccess: PropTypes.func.isRequired,

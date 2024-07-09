@@ -24,7 +24,51 @@ const Register = () => {
   };
 
   const basics = createTheme({
-    // Same theme configuration as in the Login component
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          outlined: {
+            borderColor: "white",
+            backgroundColor: "#6C0B8C",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "darkviolet",
+              borderColor: "white",
+            },
+          },
+        },
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
+              },
+              "&:hover fieldset": {
+                borderColor: "white",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
+              },
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+            },
+            "& .MuiInputBase-input": {
+              color: "white",
+            },
+            "& .MuiInputLabel-root": {
+              color: "white",
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "white",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "white",
+            },
+          },
+        },
+      },
+    },
   });
 
   const handleChange = (event) => {
@@ -114,10 +158,10 @@ const Register = () => {
           label="Data de Admissão"
           variant="outlined"
           name="data_admissao"
-          placeholder="data de admissão"
           type="date"
           value={formData.data_admissao}
           onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
         />
         <TextField
           id='register_id_cargo'
