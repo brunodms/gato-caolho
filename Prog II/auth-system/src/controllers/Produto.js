@@ -1,14 +1,88 @@
 import pool from '../config/dbConfig';
-//const pool = require('../config/dbConfig');
 
 class ProdutoController {
-  // Rota de teste para verificar se a API está funcionando
+  // Listar todos os produtos
   async index(req, res) {
     try {
       const result = await pool.query('SELECT * FROM produto');
       res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
+      res.status(500).send('Erro no servidor');
+    }
+  }
+
+  // Criar um novo produto
+  async create(req, res) {
+    try {
+      const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
+      const query = `
+        INSERT INTO produto (nome, descricao, valor, marca, unidade_medida, id_secao)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING *`;
+      const values = [nome, descricao, valor, marca, unidade_medida, id_secao];
+      const result = await pool.query(query, values);
+      res.status(201).json(result.rows[0]);
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({ message: 'Erro ao criar produto.' });
+    }
+  }
+
+  // Atualizar um produto existente
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
+      const query = `
+        UPDATE produto
+        SET nome = $1, descricao = $2, valor = $3, marca = $4, unidade_medida = $5, id_secao = $6
+        WHERE id_produto = $7
+        RETURNING *`;
+      const values = [nome, descricao, valor, marca, unidade_medida, id_secao, id];
+      const result = await pool.query(query, values);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'Produto não encontrado.' });
+      }
+
+      res.status(200).json(result.rows[0]);
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({ message: 'Erro ao atualizar produto.' });
+    }
+  }
+
+  // Excluir um produto
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await pool.query('DELETE FROM produto WHERE id_produto = $1', [id]);
+
+      if (result.rowCount === 0) {
+        return res.status(404).json({ message: 'Produto não encontrado.' });
+      }
+
+      res.status(200).json({ message: 'Produto excluído com sucesso!' });
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({ message: 'Erro ao excluir produto.' });
+    }
+  }
+
+  // Obter detalhes de um produto pelo ID
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await pool.query('SELECT * FROM produto WHERE id_produto = $1', [id]);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'Produto não encontrado.' });
+      }
+
+      res.status(200).json(result.rows[0]);
+    } catch (error) {
+      console.error(error);
       res.status(500).send('Erro no servidor');
     }
   }
