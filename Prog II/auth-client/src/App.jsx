@@ -1,12 +1,12 @@
+import Login from "./components/Login";
 import SideNav from "./components/SideNav";
-import Cardapio from "./components/Cardapio";
 import "./App.css";
 
 function App() {
   return (
     <main>
+      <Login />
       <SideNav />
-      <Cardapio />
     </main>
   );
 }
