@@ -3,10 +3,11 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import SideNav from "./components/SideNav";
+import Header from "./components/Header";
 import Login from "./components/Login";
 import Cardapio from "./components/Cardapio";
 import TestesIntegracao from "./components/TestesIntegracao";
-import Register from "./components/Register";  // Importe o componente de registro
+import Register from "./components/Register";
 
 const onLoginSuccess = (response) => {
   console.log("Login bem-sucedido", response);
@@ -26,6 +27,7 @@ const RoutesComponent = () => {
         <Route path="/testes" element={<TestesIntegracao />} />
         <Route path="/register" element={<Register onRegisterSuccess={onRegisterSuccess} />} />
       </Routes>
+      <Header />
       <SideNav />
     </Router>
   );

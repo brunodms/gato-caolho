@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import {
   Button,
   AppBar,
@@ -31,13 +31,12 @@ const SideNav = () => {
     >
       <Toolbar>
         <Button
-          edge="start"
           color="inherit"
           aria-label="open drawer"
           onClick={handleDrawerOpen}
-          sx={{ mr: 2, color: "white" }}
+          sx={{ color: "rgba(177, 160, 0, 1)" }}
         >
-          <MenuIcon />
+          <MenuIcon style={{ fontSize: 40, marginTop: 23, marginBottom: 23 }} />
         </Button>
       </Toolbar>
       <Drawer
@@ -63,13 +62,14 @@ const SideNav = () => {
       >
         <Toolbar>
           <Button
-            edge="start"
             color="inherit"
-            aria-label="close drawer"
+            aria-label="open drawer"
             onClick={handleDrawerClose}
-            sx={{ mr: 2, color: "white" }}
+            sx={{ color: "rgba(177, 160, 0, 1)" }}
           >
-            <MenuIcon />
+            <MenuIcon
+              style={{ fontSize: 40, marginTop: 23, marginBottom: 23 }}
+            />
           </Button>
         </Toolbar>
         <List>

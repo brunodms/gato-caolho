@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { AppBar, Card, CardContent, Typography, CardActionArea, Box  } from "@mui/material";
 import getProduto from "../service/getProduto";
-import Header from "./Header";
 
 const Produto = ({ produto }) => {
   return (
@@ -72,7 +71,6 @@ const Cardapio = () => {
             padding: 2,
           }}
         >
-          <Header title="Cardápio" />
         </AppBar>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {produtos.map((produto) => (

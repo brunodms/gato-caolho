@@ -1,12 +1,18 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
-import { Button, createTheme, TextField, Box, Stack, Divider } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Button,
+  createTheme,
+  TextField,
+  Box,
+  Stack,
+  Divider,
+} from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 import postLogin from "../service/postLogin";
-import Header from "./Header";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +28,7 @@ const Login = () => {
   };
 
   const handleRegisterClick = () => {
-    navigate("/register");  // Função para navegar para a tela de registro
+    navigate("/register"); // Função para navegar para a tela de registro
   };
 
   const basics = createTheme({
@@ -31,7 +37,7 @@ const Login = () => {
         styleOverrides: {
           outlined: {
             borderColor: "white",
-            backgroundColor: "#6C0B8C",
+            backgroundColor: "rgba(108, 11, 142, 1)",
             color: "white",
             "&:hover": {
               backgroundColor: "darkviolet",
@@ -97,64 +103,79 @@ const Login = () => {
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1, width: "60%" },
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           marginTop: 20,
-          marginBottom: 2
+          minHeight: "100vw",
         }}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
       >
-        <Header title="Acessar gato caolho" />
-        <TextField
-          id='login_email'
-          label="Email"
-          variant="outlined"
-          name="email"
-          placeholder="email"
-          type="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <TextField
-          id='login_senha'
-          label="Senha"
-          variant="outlined"
-          name="senha"
-          placeholder="senha"
-          type="password"
-          value={formData.senha}
-          onChange={handleChange}
-        />
-        <Stack spacing={2} direction="row" sx={{
-          "& > :not(style)": { m: 1, width: "60%" },
-          justifyContent: "center",
-        }}>
-          <Button id='entrar' className="Button" variant="outlined" type="submit">
+        <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+          <Stack
+            direction="column"
+            spacing={2}
+            sx={{ width: "100%", maxWidth: 400,}}
+          >
+            <Stack
+          direction="column"
+          spacing={2}>
+            <TextField
+              id="login_email"
+              label="Email"
+              variant="outlined"
+              name="email"
+              placeholder="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <TextField
+              id="login_senha"
+              label="Senha"
+              variant="outlined"
+              name="senha"
+              placeholder="senha"
+              type="password"
+              value={formData.senha}
+              onChange={handleChange}
+            />
+          <Button
+            id="entrar"
+            className="Button"
+            variant="outlined"
+            type="submit"
+            onClick={handleSubmit}
+          >
             Entrar
           </Button>
-        </Stack>
+          </Stack>
 
-        <Divider sx={{ width: "80%", backgroundColor: "yellow", marginTop: 2, marginBottom: 2 }} />
-
-        <Stack spacing={2} direction="row" sx={{
-          "& > :not(style)": { m: 1, width: "60%" },
-          justifyContent: "center",
-          flexGrow: 1, // Add this line to push the stack to the bottom
-        }}>
-          <Button id='registro' className="Button" variant="outlined" type="submit" onClick={handleRegisterClick} sx={{ marginTop: 2 }}>
+        <Box sx={{ flexGrow: 1 }} />
+        <Stack
+          direction="column"
+          spacing={2}>
+          <Divider
+            sx={{
+              width: "100%",
+              backgroundColor: "rgba(177, 160, 0, 1)",
+            }}
+          />
+          <Button
+            id="registro"
+            className="Button"
+            variant="outlined"
+            type="submit"
+            onClick={handleRegisterClick}
+            sx={{ width: "100%"}}
+          >
             Registrar-se
           </Button>
+          </Stack>
         </Stack>
+        </Box>
       </Box>
     </ThemeProvider>
   );
 };
-
 
 Login.propTypes = {
   onLoginSuccess: PropTypes.func.isRequired,

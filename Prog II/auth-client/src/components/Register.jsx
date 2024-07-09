@@ -29,7 +29,7 @@ const Register = () => {
         styleOverrides: {
           outlined: {
             borderColor: "white",
-            backgroundColor: "#6C0B8C",
+            backgroundColor: "rgba(108, 11, 142, 1)",
             color: "white",
             "&:hover": {
               backgroundColor: "darkviolet",

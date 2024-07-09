@@ -1,15 +1,13 @@
-import PropTypes from 'prop-types';
 import {
   Box,
   AppBar,
   Toolbar,
-  Typography
 } from "@mui/material";
 import logo from "../assets/logo.png";
 
 import "../App.css";
 
-const Header = ({title}) => {
+const Header = () => {
   return (
     <Box sx={{ width: "100vh" }}>
       <AppBar
@@ -23,7 +21,7 @@ const Header = ({title}) => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "flex-end", // Add this line to align items to the right
               alignItems: "center",
               textAlign: "center",
             }}
@@ -31,21 +29,13 @@ const Header = ({title}) => {
             <img
               src={logo}
               alt="Logo"
-              style={{ marginTop: 40, height: 60, marginBottom: 10 }}
+              style={{ marginTop: 20, height: 60, marginBottom: 20 }}
             />
-            <Typography variant="h6" sx={{ color: "#B1A000" }}>
-              {title}
-            </Typography>
           </Box>
-          <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
       </AppBar>
     </Box>
   );
-};
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
 };
 
 export default Header;
