@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Button, createTheme, TextField, Box, Stack } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 import postLogin from "../service/postLogin";
 
 import Header from "./Header";
 const Login = ({ onLoginSuccess }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     senha: "",
@@ -74,10 +76,11 @@ const Login = ({ onLoginSuccess }) => {
       email: formData.email,
       senha: formData.senha,
     };
-
+    
     try {
       const response = await postLogin(data);
       onLoginSuccess(response);
+      navigate('/cardapio');
     } catch (error) {
       console.log("erro ao logar", error);
     }
