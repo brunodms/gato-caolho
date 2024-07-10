@@ -1,7 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import { AuthContext } from './context/AuthContext';
 import SideNav from "./components/SideNav";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -16,14 +16,17 @@ const onLoginSuccess = (response) => {
 
 const onRegisterSuccess = (response) => {
   console.log("Registro bem-sucedido", response);
-  // Redirecionar ou outras ações pós-login
+  // Redirecionar ou outras ações pós-registro
 };
+
 const RoutesComponent = () => {
+  const { token } = useContext(AuthContext);
+
   return (
     <Router>
       <Routes>
         <Route exact path="/" element={<Login onLoginSuccess={onLoginSuccess}/>} />
-        <Route path="/cardapio" element={<Cardapio />} />
+        <Route path="/cardapio" element={token ? <Cardapio /> : <Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path="/testes" element={<TestesIntegracao />} />
         <Route path="/register" element={<Register onRegisterSuccess={onRegisterSuccess} />} />
       </Routes>

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   createTheme,
@@ -12,10 +12,20 @@ import {
 import { ThemeProvider } from "@emotion/react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../context/AuthContext';
 
 import postLogin from "../service/postLogin";
 
 const Login = () => {
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/cardapio"); // Redireciona para a página de cardápio se já estiver logado
+    }
+  }, [token, navigate]);
+
   const [formData, setFormData] = useState({
     email: "",
     senha: "",
@@ -25,7 +35,6 @@ const Login = () => {
   const handleCloseAlert = () => {
     setErrorMessage("");
   };
-  const navigate = useNavigate();
 
   const handleLoginSuccess = (response) => {
     console.log("Login bem-sucedido", response);
