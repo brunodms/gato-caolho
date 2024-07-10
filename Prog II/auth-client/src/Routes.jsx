@@ -9,6 +9,8 @@ import Login from "./components/Login";
 import Cardapio from "./components/Menu";
 import TestesIntegracao from "./components/TestesIntegracao";
 import Register from "./components/Signup";
+import Account from "./components/Account";
+import AddProduct from "./components/addProduct";
 
 const onLoginSuccess = (response) => {
   console.log("Login bem-sucedido", response);
@@ -28,8 +30,10 @@ const RoutesComponent = () => {
       <Routes>
         <Route exact path="/" element={<Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path="/menu" element={token ? <Cardapio /> : <Login onLoginSuccess={onLoginSuccess}/>} />
-        <Route path="/testes" element={<TestesIntegracao />} />
+        <Route path="/testes" element={token ? <TestesIntegracao /> : <Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path="/signup" element={<Register onSignupSuccess={onSignupSuccess} />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/addproduct" element={token? <AddProduct /> : <Login onLoginSuccess={onLoginSuccess}/>} />
       </Routes>
       <Header />
       <SideNav />
