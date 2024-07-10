@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   AppBar,
@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -15,6 +16,7 @@ import "../App.css";
 
 const SideNav = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -24,6 +26,10 @@ const SideNav = () => {
     setOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   return (
     <AppBar
       position="fixed"
@@ -87,6 +93,12 @@ const SideNav = () => {
           </ListItem>
           <ListItem button component={Link} to="/testes">
             <ListItemText primary="Usuários" style={{ color: "white" }} />
+          </ListItem>
+        </List>
+        <Box sx={{ flexGrow: 1 }} />
+        <List sx={{ marginBottom: 1 }}>
+          <ListItem button onClick={handleLogout}>
+            <ListItemText primary="Logout" style={{ color: "white" }} />
           </ListItem>
         </List>
       </Drawer>
