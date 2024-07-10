@@ -23,7 +23,7 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      navigate("/cardapio"); // Redireciona para a página de cardápio se já estiver logado
+      navigate("/menu");
     }
   }, [navigate]);
 
@@ -40,11 +40,11 @@ const Login = () => {
   const handleLoginSuccess = async (response) => {
     console.log("Login bem-sucedido", response);
     login(response.token, { email: formData.email, senha: formData.senha }); // Atualiza o token e usuário no contexto
-    navigate("/cardapio");
+    navigate("/menu");
   };
 
   const handleRegisterClick = () => {
-    navigate("/register");
+    navigate("/signup");
   };
 
   const basics = createTheme({

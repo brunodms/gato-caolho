@@ -44,7 +44,7 @@ Produto.propTypes = {
   }).isRequired,
 };
 
-const Cardapio = () => {
+const Menu = () => {
     const [produtos, setProdutos] = React.useState([]);
   
     React.useEffect(() => {
@@ -81,4 +81,4 @@ const Cardapio = () => {
     );
   };
   
-  export default Cardapio;
+  export default Menu;

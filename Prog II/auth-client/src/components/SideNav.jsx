@@ -85,7 +85,7 @@ const SideNav = () => {
               style={{ color: "white" }}
             />
           </ListItem>
-          <ListItem button component={Link} to="/cardapio">
+          <ListItem button component={Link} to="/menu">
             <ListItemText primary="Cardápio" style={{ color: "white" }} />
           </ListItem>
           <ListItem button component={Link} to="/promotions">
