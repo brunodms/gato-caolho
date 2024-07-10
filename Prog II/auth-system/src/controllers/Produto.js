@@ -35,6 +35,7 @@ class ProdutoController {
     try {
       const { id } = req.params;
       const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
+      
       const query = `
         UPDATE produto
         SET nome = $1, descricao = $2, valor = $3, marca = $4, unidade_medida = $5, id_secao = $6

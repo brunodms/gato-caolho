@@ -6,7 +6,7 @@ const routes = new Router();
 // Rota para a página inicial da API
 routes.get('/', usuarioController.index);
 routes.get('/:id', usuarioController.getById);
-routes.put('/update_usuario/', usuarioController.update_usuario);
+routes.put('/update_usuario/:id', usuarioController.update_usuario);
 routes.post('/login/', usuarioController.login);
 routes.post('/register/', usuarioController.create_cliente);
 routes.post('/register_funcionario/', usuarioController.create_funcionario);

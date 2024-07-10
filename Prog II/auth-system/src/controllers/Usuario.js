@@ -34,34 +34,35 @@ class UsuarioController {
   async update_usuario(req, res) {
     try {
       const { id } = req.params;
-      const { nome, cpf, senha, email, telefone, id_cargo, data_admissao, status } = req.body;
+      const { nome, cpf, senha, email, telefone, id_cargo, status } = req.body;
       const dataAdmissao = new Date().toISOString().slice(0, 10);
 
       const userResult = await pool.query('SELECT * FROM usuario WHERE id_usuario = $1', [id]);
-
+  
       if (userResult.rows.length === 0) {
         return res.status(404).json({ message: 'Usuário não encontrado.' });
       }
-
+  
       let hashedPassword;
       if (senha) {
         hashedPassword = await bcrypt.hash(senha, 10);
       }
-
+  
       const updateQuery = `
         UPDATE usuario 
-        SET nome = $1, cpf = $2, senha = COALESCE($3, senha), email = $4, telefone = $5, id_cargo = $6, data_admisaao = $7, status = $8,
+        SET nome = $1, cpf = $2, senha = COALESCE($3, senha), email = $4, telefone = $5, id_cargo = $6, data_admissao = $7, status = $8
         WHERE id_usuario = $9
       `;
-
-      await pool.query(updateQuery, [nome, cpf, hashedPassword || userResult.rows[0].senha, email, telefone, id_cargo, data_admissao, status, id]);
-
+  
+      await pool.query(updateQuery, [nome, cpf, senha ? hashedPassword : userResult.rows[0].senha, email, telefone, id_cargo, dataAdmissao, status, id]);
+  
       res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
     } catch (err) {
       console.error(err);
       res.status(500).send('Erro no servidor');
     }
-}
+  }
+  
 
   async login(req, res) {
     try {
