@@ -1,20 +1,71 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
-  createTheme,
   TextField,
   Box,
   Stack,
   Alert,
+  MenuItem,
+  ThemeProvider,
+  createTheme
 } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-import postRegister from "../service/postRegister";
-
-const Register = () => {
+import postSignup from "../service/postSignup";
+import getCargo from "../service/getCargo";
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          borderColor: "white",
+          backgroundColor: "rgba(108, 11, 142, 1)",
+          color: "white",
+          "&:hover": {
+            backgroundColor: "darkviolet",
+            borderColor: "white",
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+          },
+          "& .MuiInputBase-input": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: "white",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+          },
+        },
+      },
+    },
+  },
+});
+const Signup = () => {
   const [formData, setFormData] = useState({
     cpf: "",
     nome: "",
@@ -24,63 +75,28 @@ const Register = () => {
     id_cargo: "",
     telefone: "",
   });
+  const [cargos, setCargos] = useState([]);
+  useEffect(() => {
+    const fetchCargos = async () => {
+      try {
+        const response = await getCargo(); // Call the getCargo service
+        setCargos(response);
+      } catch (error) {
+        console.error("Error fetching cargos:", error);
+      }
+    };
+
+    fetchCargos();
+  }, []);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const handleCloseAlert = () => {
     setErrorMessage("");
   };
-  const handleRegisterSuccess = (response) => {
+  const handleSignupSuccess = (response) => {
     console.log("Registro bem-sucedido", response);
     navigate("/");
   };
-
-  const basics = createTheme({
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          outlined: {
-            borderColor: "white",
-            backgroundColor: "rgba(108, 11, 142, 1)",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "darkviolet",
-              borderColor: "white",
-            },
-          },
-        },
-      },
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "white",
-              },
-              "&:hover fieldset": {
-                borderColor: "white",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "white",
-              },
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-            },
-            "& .MuiInputBase-input": {
-              color: "white",
-            },
-            "& .MuiInputLabel-root": {
-              color: "white",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "white",
-            },
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "white",
-            },
-          },
-        },
-      },
-    },
-  });
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -99,8 +115,8 @@ const Register = () => {
     };
 
     try {
-      const response = await postRegister(data);
-      handleRegisterSuccess(response);
+      const response = await postSignup(data);
+      handleSignupSuccess(response);
     } catch (error) {
       console.log("erro ao registrar", error);
       setErrorMessage(error.message);
@@ -109,7 +125,7 @@ const Register = () => {
 
   return (
     <Box>
-      <ThemeProvider theme={basics}>
+      <ThemeProvider theme={theme}>
         <Box
           component="form"
           sx={{
@@ -128,7 +144,7 @@ const Register = () => {
             >
               <Stack direction="column" spacing={2}>
                 <TextField
-                  id="register_cpf"
+                  id="signup_cpf"
                   label="CPF"
                   variant="outlined"
                   name="cpf"
@@ -138,7 +154,7 @@ const Register = () => {
                   onChange={handleChange}
                 />
                 <TextField
-                  id="register_nome"
+                  id="signup_nome"
                   label="Nome"
                   variant="outlined"
                   name="nome"
@@ -148,7 +164,7 @@ const Register = () => {
                   onChange={handleChange}
                 />
                 <TextField
-                  id="register_email"
+                  id="signup_email"
                   label="Email"
                   variant="outlined"
                   name="email"
@@ -158,7 +174,7 @@ const Register = () => {
                   onChange={handleChange}
                 />
                 <TextField
-                  id="register_senha"
+                  id="signup_senha"
                   label="Senha"
                   variant="outlined"
                   name="senha"
@@ -168,7 +184,7 @@ const Register = () => {
                   onChange={handleChange}
                 />
                 <TextField
-                  id="register_data_admissao"
+                  id="signup_data_admissao"
                   label="Data de Admissão"
                   variant="outlined"
                   name="data_admissao"
@@ -178,17 +194,23 @@ const Register = () => {
                   InputLabelProps={{ shrink: true }}
                 />
                 <TextField
-                  id="register_id_cargo"
-                  label="ID do Cargo"
-                  variant="outlined"
-                  name="id_cargo"
-                  placeholder="id do cargo"
-                  type="number"
-                  value={formData.id_cargo}
-                  onChange={handleChange}
-                />
+            id="signup_select_id_cargo"
+            label="ID do Cargo"
+            variant="outlined"
+            name="id_cargo"
+            placeholder="id do cargo"
+            select
+            value={formData.id_cargo}
+            onChange={handleChange}
+          >
+            {cargos.map((cargo) => (
+              <MenuItem key={cargo.id_cargo} value={cargo.id_cargo}>
+                {cargo.cargo}
+              </MenuItem>
+            ))}
+          </TextField>
                 <TextField
-                  id="register_telefone"
+                  id="signup_telefone"
                   label="Telefone"
                   variant="outlined"
                   name="telefone"
@@ -223,8 +245,8 @@ const Register = () => {
   );
 };
 
-Register.propTypes = {
-  onRegisterSuccess: PropTypes.func.isRequired,
+Signup.propTypes = {
+  onSignupSuccess: PropTypes.func.isRequired,
 };
 
-export default Register;
+export default Signup;

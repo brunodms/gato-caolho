@@ -2,19 +2,70 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
-  createTheme,
   TextField,
   Box,
   Stack,
   Divider,
   Alert,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../context/AuthContext';
 
 import postLogin from "../service/postLogin";
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          borderColor: "white",
+          backgroundColor: "rgba(108, 11, 142, 1)",
+          color: "white",
+          "&:hover": {
+            backgroundColor: "darkviolet",
+            borderColor: "white",
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+          },
+          "& .MuiInputBase-input": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: "white",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+          },
+        },
+      },
+    },
+  },
+});
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -47,54 +98,6 @@ const Login = () => {
     navigate("/signup");
   };
 
-  const basics = createTheme({
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          outlined: {
-            borderColor: "white",
-            backgroundColor: "rgba(108, 11, 142, 1)",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "darkviolet",
-              borderColor: "white",
-            },
-          },
-        },
-      },
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "white",
-              },
-              "&:hover fieldset": {
-                borderColor: "white",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "white",
-              },
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-            },
-            "& .MuiInputBase-input": {
-              color: "white",
-            },
-            "& .MuiInputLabel-root": {
-              color: "white",
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "white",
-            },
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "white",
-            },
-          },
-        },
-      },
-    },
-  });
-
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
@@ -117,7 +120,7 @@ const Login = () => {
 
   return (
     <Box>
-      <ThemeProvider theme={basics}>
+      <ThemeProvider theme={theme}>
         <Box
           component="form"
           sx={{

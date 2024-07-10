@@ -1,10 +1,61 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { AppBar, Card, CardContent, Typography, CardActionArea, Box  } from "@mui/material";
+import { AppBar, Card, CardContent, Typography, CardActionArea, Box, ThemeProvider, createTheme } from "@mui/material";
 import getProduto from "../service/getProduto";
 
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          borderColor: "white",
+          backgroundColor: "rgba(108, 11, 142, 1)",
+          color: "white",
+          "&:hover": {
+            backgroundColor: "darkviolet",
+            borderColor: "white",
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+          },
+          "& .MuiInputBase-input": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root": {
+            color: "white",
+          },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: "white",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+          },
+        },
+      },
+    },
+  },
+});
 const Produto = ({ produto }) => {
   return (
+    <ThemeProvider theme={theme}>
     <Card
       sx={{
         marginTop: 2,
@@ -31,6 +82,7 @@ const Produto = ({ produto }) => {
         </CardContent>
       </CardActionArea>
     </Card>
+    </ThemeProvider>
   );
 };
 

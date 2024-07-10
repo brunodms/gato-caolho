@@ -1,4 +1,4 @@
-async function postRegister(data){
+async function postSignup(data){
     
         const response = await fetch('http://localhost:8080/usuario/register', {
             method: 'POST',
@@ -15,4 +15,4 @@ async function postRegister(data){
     return await response.json();
 }
 
-export default postRegister;
+export default postSignup;

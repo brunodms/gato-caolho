@@ -15,7 +15,7 @@ const onLoginSuccess = (response) => {
   // Redirecionar ou outras ações pós-login
 };
 
-const onRegisterSuccess = (response) => {
+const onSignupSuccess = (response) => {
   console.log("Registro bem-sucedido", response);
   // Redirecionar ou outras ações pós-registro
 };
@@ -29,7 +29,7 @@ const RoutesComponent = () => {
         <Route exact path="/" element={<Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path="/menu" element={token ? <Cardapio /> : <Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path="/testes" element={<TestesIntegracao />} />
-        <Route path="/signup" element={<Register onRegisterSuccess={onRegisterSuccess} />} />
+        <Route path="/signup" element={<Register onSignupSuccess={onSignupSuccess} />} />
       </Routes>
       <Header />
       <SideNav />
