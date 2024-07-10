@@ -1,6 +1,7 @@
 import pool from '../config/dbConfig';
 
 class ProdutoController {
+  
   // Listar todos os produtos
   async index(req, res) {
     try {
@@ -12,8 +13,8 @@ class ProdutoController {
     }
   }
 
-  // Criar um novo produto
-  async create(req, res) {
+  // Criar novo produto
+  async create_produto(req, res) {
     try {
       const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
       const query = `
@@ -29,8 +30,8 @@ class ProdutoController {
     }
   }
 
-  // Atualizar um produto existente
-  async update(req, res) {
+// Atualizar produto
+  async update_produto(req, res) {
     try {
       const { id } = req.params;
       const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
@@ -53,8 +54,8 @@ class ProdutoController {
     }
   }
 
-  // Excluir um produto
-  async delete(req, res) {
+// Deletar produto
+  async delete_produto(req, res) {
     try {
       const { id } = req.params;
       const result = await pool.query('DELETE FROM produto WHERE id_produto = $1', [id]);
@@ -70,8 +71,8 @@ class ProdutoController {
     }
   }
 
-  // Obter detalhes de um produto pelo ID
-  async show(req, res) {
+// Buscar produto por id
+  async get_produto_by_id(req, res) {
     try {
       const { id } = req.params;
       const result = await pool.query('SELECT * FROM produto WHERE id_produto = $1', [id]);
