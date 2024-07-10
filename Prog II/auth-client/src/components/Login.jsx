@@ -1,17 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useContext } from "react";
-import {
-  Button,
-  TextField,
-  Box,
-  Stack,
-  Divider,
-  Alert,
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+
+import { Alert, Box, Button, createTheme, Divider, Stack, TextField, ThemeProvider } from "@mui/material";
+
 import { AuthContext } from '../context/AuthContext';
 
 import postLogin from "../service/postLogin";

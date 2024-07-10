@@ -1,6 +1,9 @@
 import React from "react";
+
 import PropTypes from "prop-types";
-import { AppBar, Card, CardContent, Typography, CardActionArea, Box, ThemeProvider, createTheme } from "@mui/material";
+
+import { AppBar, Box, Card, CardActionArea, CardContent, createTheme, ThemeProvider, Typography } from "@mui/material";
+
 import getProduto from "../service/getProduto";
 
 const theme = createTheme({
