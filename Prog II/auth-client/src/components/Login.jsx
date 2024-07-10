@@ -17,14 +17,15 @@ import { AuthContext } from '../context/AuthContext';
 import postLogin from "../service/postLogin";
 
 const Login = () => {
-  const { token } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     if (token) {
       navigate("/cardapio"); // Redireciona para a página de cardápio se já estiver logado
     }
-  }, [token, navigate]);
+  }, [navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -36,8 +37,9 @@ const Login = () => {
     setErrorMessage("");
   };
 
-  const handleLoginSuccess = (response) => {
+  const handleLoginSuccess = async (response) => {
     console.log("Login bem-sucedido", response);
+    login(response.token, { email: formData.email, senha: formData.senha }); // Atualiza o token e usuário no contexto
     navigate("/cardapio");
   };
 
