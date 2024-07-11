@@ -130,12 +130,12 @@ const Account = () => {
     event.preventDefault();
     const data = {
       cpf: formData.cpf,
-      nome: formData.nome,
       email: formData.email,
-      senha: formData.senha,
+      nome: formData.nome,
       data_admissao: formData.data_admissao,
       id_cargo: formData.id_cargo,
       telefone: formData.telefone,
+      senha: formData.senha,
     };
   };
 
@@ -160,7 +160,7 @@ const Account = () => {
             >
               <Stack direction="column" spacing={2}>
                 <TextField
-                  id="signup_cpf"
+                  id="account_cpf"
                   label="CPF"
                   variant="outlined"
                   name="cpf"
@@ -171,18 +171,7 @@ const Account = () => {
                   disabled
                 />
                 <TextField
-                  id="signup_nome"
-                  label="Nome"
-                  variant="outlined"
-                  name="nome"
-                  placeholder="nome"
-                  type="text"
-                  value={formData.nome}
-                  onChange={handleChange}
-                  disabled
-                />
-                <TextField
-                  id="signup_email"
+                  id="account_email"
                   label="Email"
                   variant="outlined"
                   name="email"
@@ -193,18 +182,18 @@ const Account = () => {
                   disabled
                 />
                 <TextField
-                  id="signup_senha"
-                  label="Senha"
+                  id="account_nome"
+                  label="Nome"
                   variant="outlined"
-                  name="senha"
-                  placeholder="senha"
-                  type="password"
-                  value={formData.senha}
+                  name="nome"
+                  placeholder="nome"
+                  type="text"
+                  value={formData.nome}
                   onChange={handleChange}
                   disabled
                 />
                 <TextField
-                  id="signup_data_admissao"
+                  id="account_data_admissao"
                   label="Data de Admissão"
                   variant="outlined"
                   name="data_admissao"
@@ -215,7 +204,7 @@ const Account = () => {
                   disabled
                 />
                 <TextField
-                  id="signup_select_id_cargo"
+                  id="account_select_id_cargo"
                   label="ID do Cargo"
                   variant="outlined"
                   name="id_cargo"
@@ -232,13 +221,26 @@ const Account = () => {
                   ))}
                 </TextField>
                 <TextField
-                  id="signup_telefone"
+                  id="account_telefone"
                   label="Telefone"
                   variant="outlined"
                   name="telefone"
                   placeholder="telefone"
                   type="text"
                   value={formData.telefone}
+                  onChange={handleChange}
+                  disabled
+                />
+
+                
+                <TextField
+                  id="account_senha"
+                  label="Senha"
+                  variant="outlined"
+                  name="senha"
+                  placeholder="senha"
+                  type="password"
+                  value={formData.senha}
                   onChange={handleChange}
                   disabled
                 />

@@ -74,20 +74,14 @@ const SideNav = () => {
           </Button>
         </Toolbar>
         <List>
-          <ListItem button component={Link} to="/addproduct">
-            <ListItemText
-              primary="Adicionar produtos"
-              style={{ color: "white" }}
-            />
-          </ListItem>
           <ListItem button component={Link} to="/menu">
             <ListItemText primary="Cardápio" style={{ color: "white" }} />
           </ListItem>
-          <ListItem button component={Link} to="/promotions">
-            <ListItemText primary="Promoções" style={{ color: "white" }} />
+          <ListItem button component={Link} to="/addproduct">
+            <ListItemText primary="Adicionar produtos" style={{ color: "white" }}/>
           </ListItem>
           <ListItem button component={Link} to="/testes">
-            <ListItemText primary="Usuários" style={{ color: "white" }} />
+            <ListItemText primary="Testes banco" style={{ color: "white" }} />
           </ListItem>
         </List>
         <Box sx={{ flexGrow: 1 }} />

@@ -94,7 +94,7 @@ const AddProduct = ({ onProductAdded }) => {
   const handleProductAdded = (response) => {
     console.log("Produto adicionado com sucesso", response);
     onProductAdded();
-    navigate("/products");
+    navigate("/Menu");
   };
 
   const handleChange = (event) => {
