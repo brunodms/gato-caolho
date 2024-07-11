@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Alert, Box, Button, createTheme, MenuItem, Stack, TextField, ThemeProvider } from "@mui/material";
 
-//import postProduct from "../service/postProduct";
+import postAddProduct from "../service/postAddProduct";
 import getSecao from "../service/getSecao";
 
 const theme = createTheme({
@@ -113,8 +113,8 @@ const AddProduct = ({ onProductAdded }) => {
     };
 
     try {
-     // const response = await postProduct(data);
-     // handleProductAdded(response);
+     const response = await postAddProduct(data);
+     handleProductAdded(response);
     } catch (error) {
       console.log("Erro ao adicionar produto", error);
       setErrorMessage(error.message);
