@@ -22,6 +22,11 @@ const onSignupSuccess = (response) => {
   // Redirecionar ou outras ações pós-registro
 };
 
+const onProductAdded = (response) => {
+  console.log("Registro bem-sucedido", response);
+  // Redirecionar ou outras ações pós-registro
+};
+
 const RoutesComponent = () => {
   const { token } = useContext(AuthContext);
 
@@ -33,7 +38,7 @@ const RoutesComponent = () => {
         <Route path="/testes" element={token ? <TestesIntegracao /> : <Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path="/signup" element={<Register onSignupSuccess={onSignupSuccess} />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/addproduct" element={token? <AddProduct /> : <Login onLoginSuccess={onLoginSuccess}/>} />
+        <Route path="/addproduct" element={token ? <AddProduct onProductAdded={onProductAdded}/> : <Login onLoginSuccess={onLoginSuccess}/>} />
       </Routes>
       <Header />
       <SideNav />

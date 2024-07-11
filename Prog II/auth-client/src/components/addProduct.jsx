@@ -195,10 +195,10 @@ const AddProduct = ({ onProductAdded }) => {
                   id="product_secao"
                   label="Seção"
                   variant="outlined"
-                  name="secao"
+                  name="id_secao"
                   placeholder="seção"
                   select
-                  value={formData.secao}
+                  value={formData.id_secao}
                   onChange={handleChange}
                   SelectProps={{ MenuProps: { sx: { maxHeight: 300 } } }}
                 >

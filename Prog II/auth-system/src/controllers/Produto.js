@@ -17,6 +17,17 @@ class ProdutoController {
   async create_produto(req, res) {
     try {
       const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
+
+      // Validação dos campos obrigatórios
+      if (!nome || !descricao || !valor || !marca || !unidade_medida || !id_secao) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+      }
+
+      // Validação do tipo de dado
+      if (isNaN(parseInt(id_secao))) {
+        return res.status(400).json({ message: 'id_secao deve ser um número inteiro.' });
+      }
+
       const query = `
         INSERT INTO produto (nome, descricao, valor, marca, unidade_medida, id_secao)
         VALUES ($1, $2, $3, $4, $5, $6)
