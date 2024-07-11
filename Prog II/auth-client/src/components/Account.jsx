@@ -3,8 +3,6 @@ import React, { useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-import "../overflow.css";
-
 import {
   Alert,
   Box,
@@ -80,18 +78,18 @@ const Account = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
-    cpf: 0,
+    cpf: "",
     nome: "",
     email: "",
     senha: "",
-    data_admissao: 0,
-    id_cargo: 1,
-    telefone: 0,
+    data_admissao: "",
+    id_cargo: "",
+    telefone: "",
     status: false,
     isEditing: false,
   });
 
-  useEffect(() => {
+  useState(() => {
     const fetchUsuario = async () => {
       try {
         const response = await getUsuarioById(id_usuario);
@@ -166,7 +164,7 @@ const Account = () => {
   };
 
   const handleSave = async () => {
-    // Add your code to save the updated user data here
+
   };
 
   return (
@@ -196,7 +194,7 @@ const Account = () => {
                   name="cpf"
                   placeholder="cpf"
                   type="text"
-                  value={formData.cpf}
+                  value={formData.cpf || ""}
                   onChange={handleChange}
                   disabled
                 />
@@ -207,7 +205,7 @@ const Account = () => {
                   name="email"
                   placeholder="email"
                   type="email"
-                  value={formData.email}
+                  value={formData.email || ""}
                   onChange={handleChange}
                   disabled
                 />
@@ -218,7 +216,7 @@ const Account = () => {
                   name="nome"
                   placeholder="nome"
                   type="text"
-                  value={formData.nome}
+                  value={formData.nome || ""}
                   onChange={handleChange}
                   disabled={!formData.isEditing}
                 />
@@ -228,7 +226,7 @@ const Account = () => {
                   variant="outlined"
                   name="data_admissao"
                   type="date"
-                  value={formData.data_admissao}
+                  value={formData.data_admissao || ""}
                   onChange={handleChange}
                   InputLabelProps={{ shrink: true }}
                   disabled
@@ -238,23 +236,23 @@ const Account = () => {
                   spacing={2}
                 >
                   <TextField
-                    id="account_select_cargo"
-                    label="Cargo"
-                    variant="outlined"
-                    name="cargo"
-                    placeholder="cargo"
-                    select
-                    value={formData.id_cargo}
-                    onChange={handleChange}
-                    disabled={!formData.isEditing}
-                    sx={{ width: "100%", maxWidth: 300 }}
-                  >
-                    {cargos.map((cargo) => (
-                      <MenuItem key={cargo.id_cargo} value={cargo.id_cargo}>
-                        {cargo.cargo}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+            id="account_select_cargo"
+            label="Cargo"
+            variant="outlined"
+            name="id_cargo"
+            placeholder="cargo"
+            select
+            value={formData.id_cargo}
+            onChange={handleChange}
+            disabled={!formData.isEditing}
+            sx={{ width: "100%", maxWidth: 300 }}
+          >
+            {cargos.map((cargo) => (
+              <MenuItem key={cargo.id_cargo} value={cargo.id_cargo}>
+                {cargo.cargo}
+              </MenuItem>
+            ))}
+          </TextField>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -291,7 +289,7 @@ const Account = () => {
                   name="telefone"
                   placeholder="telefone"
                   type="number"
-                  value={formData.telefone}
+                  value={formData.telefone || ""}
                   onChange={handleChange}
                   disabled={!formData.isEditing}
                 />
@@ -303,7 +301,7 @@ const Account = () => {
                   name="senha"
                   placeholder="senha"
                   type="password"
-                  value={formData.senha}
+                  value={formData.senha || ""}
                   onChange={handleChange}
                   disabled={!formData.isEditing}
                 />

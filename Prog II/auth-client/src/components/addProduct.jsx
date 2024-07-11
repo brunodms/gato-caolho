@@ -10,7 +10,6 @@ import { Alert, Box, Button, createTheme, MenuItem, Stack, TextField, ThemeProvi
 import postAddProduct from "../service/postAddProduct";
 import getSecao from "../service/getSecao";
 
-import "../overflow.css";
 const theme = createTheme({
     palette: {
       mode: "dark",

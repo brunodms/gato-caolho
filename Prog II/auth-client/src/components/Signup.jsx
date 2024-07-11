@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-import "../overflow.css";
 import {
   Alert,
   Box,
