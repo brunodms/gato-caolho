@@ -7,6 +7,7 @@ const routes = new Router();
 routes.get('/', usuarioController.index);
 routes.get('/:id', usuarioController.getById);
 routes.put('/update_usuario/:id', usuarioController.update_usuario);
+routes.put('/desativa_usuario/:id', usuarioController.desativa_usuario);
 routes.post('/login/', usuarioController.login);
 routes.post('/register/', usuarioController.createUsuario);
 routes.delete('/delete_usuario/:id', usuarioController.delete_usuario);

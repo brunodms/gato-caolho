@@ -81,6 +81,48 @@ class UsuarioController {
       res.status(500).send('Erro no servidor');
     }
   }
+
+  async desativa_usuario(req, res) {
+    try {
+      const { id } = req.params;
+      const { nome, cpf, senha, email, telefone, id_cargo, status, data_admissao } = req.body;
+
+
+      let userExistente = await pool.query('SELECT * FROM usuario WHERE cpf = $1', [cpf]);
+      if (userExistente.rows.length > 0) {
+        return res.status(400).json({ message: 'CPF informado já possui registro.' });
+      }
+
+      userExistente = await pool.query('SELECT * FROM usuario WHERE email = $1', [email]);
+      if (userExistente.rows.length > 0) {
+        return res.status(400).json({ message: 'E-mail informado já possui registro.' });
+      }
+
+      const userResult = await pool.query('SELECT * FROM usuario WHERE id_usuario = $1', [id]);
+  
+      if (userResult.rows.length === 0) {
+        return res.status(404).json({ message: 'Usuário não encontrado.' });
+      }
+  
+      let hashedPassword;
+      if (senha) {
+        hashedPassword = await bcrypt.hash(senha, 10);
+      }
+  
+      const updateQuery = `
+        UPDATE usuario 
+        SET nome = $1, cpf = $2, senha = COALESCE($3, senha), email = $4, telefone = $5, id_cargo = $6, data_admissao = $7, status = $8
+        WHERE id_usuario = $9
+      `;
+  
+      await pool.query(updateQuery, [nome, cpf, senha ? hashedPassword : userResult.rows[0].senha, email, telefone, id_cargo, data_admissao, status, id]);
+  
+      res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro no servidor');
+    }
+  }
   
 
   async login(req, res) {
