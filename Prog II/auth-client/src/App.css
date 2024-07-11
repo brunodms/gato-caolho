@@ -1,9 +1,25 @@
+html,
 body {
+  height: auto;
+  margin: 0;
+  padding: 0;
   background-color: rgba(40, 3, 54, 1);
 }
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+Muibox-root {
+  overflow: "hidden"
+}
+
 .Button:login {
   border-color: white;
 }
+
 ::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }

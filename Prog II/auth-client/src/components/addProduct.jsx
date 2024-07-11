@@ -10,6 +10,7 @@ import { Alert, Box, Button, createTheme, MenuItem, Stack, TextField, ThemeProvi
 import postAddProduct from "../service/postAddProduct";
 import getSecao from "../service/getSecao";
 
+import "../overflow.css";
 const theme = createTheme({
     palette: {
       mode: "dark",
@@ -65,8 +66,8 @@ const AddProduct = ({ onProductAdded }) => {
   const [formData, setFormData] = useState({
     nome: "",
     descricao: "",
-    valor: "",
     marca: "",
+    value: "",
     unidade_medida: "",
     id_secao: "",
   });
@@ -98,7 +99,19 @@ const AddProduct = ({ onProductAdded }) => {
   };
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+  
+    if (name === "valor") {
+      const parsedValue = parseFloat(value.replace(",", "."));
+  
+      if (!isNaN(parsedValue)) {
+        setFormData({ ...formData, [name]: parsedValue });
+      }
+    } else if (name === "id_secao") {
+      setFormData({ ...formData, [name]: value.toString() });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -122,7 +135,7 @@ const AddProduct = ({ onProductAdded }) => {
   };
 
   return (
-    <Box>
+    <Box component="div" sx={{ overflow: 'hidden' }}>
       <ThemeProvider theme={theme}>
         <Box
           component="form"
@@ -166,10 +179,10 @@ const AddProduct = ({ onProductAdded }) => {
                   label="Valor"
                   variant="outlined"
                   name="valor"
-                  placeholder="valor"
+                  placeholder="12,99"
                   type="number"
                   value={formData.valor}
-                  onChange={handleChange}
+                  onChange={handleChange} 
                 />
                 <TextField
                   id="product_marca"

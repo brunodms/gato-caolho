@@ -4,7 +4,17 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-import { Alert, Box, Button, createTheme, MenuItem, Stack, TextField, ThemeProvider } from "@mui/material";
+import "../overflow.css";
+import {
+  Alert,
+  Box,
+  Button,
+  createTheme,
+  MenuItem,
+  Stack,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
 
 import postSignup from "../service/postSignup";
 import getCargo from "../service/getCargo";
@@ -117,7 +127,7 @@ const Signup = () => {
   };
 
   return (
-    <Box>
+    <Box component="div" sx={{ overflow: 'hidden' }}>
       <ThemeProvider theme={theme}>
         <Box
           component="form"
@@ -187,28 +197,28 @@ const Signup = () => {
                   InputLabelProps={{ shrink: true }}
                 />
                 <TextField
-            id="signup_select_id_cargo"
-            label="ID do Cargo"
-            variant="outlined"
-            name="id_cargo"
-            placeholder="id do cargo"
-            select
-            value={formData.id_cargo}
-            onChange={handleChange}
-          >
-            {cargos.map((cargo) => (
-              <MenuItem key={cargo.id_cargo} value={cargo.id_cargo}>
-                {cargo.cargo}
-              </MenuItem>
-            ))}
-          </TextField>
+                  id="signup_select_cargo"
+                  label="Cargo"
+                  variant="outlined"
+                  name="cargo"
+                  placeholder="cargo"
+                  select
+                  value={formData.id_cargo}
+                  onChange={handleChange}
+                >
+                  {cargos.map((cargo) => (
+                    <MenuItem key={cargo.id_cargo} value={cargo.id_cargo}>
+                      {cargo.cargo}
+                    </MenuItem>
+                  ))}
+                </TextField>
                 <TextField
                   id="signup_telefone"
                   label="Telefone"
                   variant="outlined"
                   name="telefone"
                   placeholder="telefone"
-                  type="text"
+                  type="number"
                   value={formData.telefone}
                   onChange={handleChange}
                 />

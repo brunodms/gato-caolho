@@ -120,7 +120,7 @@ const Menu = () => {
         <AppBar
           position="static"
           sx={{
-            marginTop: 14,
+            marginTop: 9,
             backgroundColor: "transparent",
             boxShadow: "none",
             padding: 2,

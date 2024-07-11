@@ -1,7 +1,7 @@
 import pool from '../config/dbConfig';
 
 class ProdutoController {
-  
+
   // Listar todos os produtos
   async index(req, res) {
     try {
@@ -18,14 +18,15 @@ class ProdutoController {
     try {
       const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
 
-      // Validação dos campos obrigatórios
+      // Validações
       if (!nome || !descricao || !valor || !marca || !unidade_medida || !id_secao) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
       }
-
-      // Validação do tipo de dado
-      if (isNaN(parseInt(id_secao))) {
-        return res.status(400).json({ message: 'id_secao deve ser um número inteiro.' });
+      if (typeof valor !== 'number' || valor <= 0) {
+        return res.status(400).json({ message: 'O valor deve ser um número positivo.' });
+      }
+      if (typeof id_secao !== 'number' || id_secao <= 0) {
+        return res.status(400).json({ message: 'A seção deve ser um número positivo.' });
       }
 
       const query = `
@@ -41,12 +42,20 @@ class ProdutoController {
     }
   }
 
-// Atualizar produto
+  // Atualizar produto
   async update_produto(req, res) {
     try {
       const { id } = req.params;
       const { nome, descricao, valor, marca, unidade_medida, id_secao } = req.body;
-      
+
+      // Validações
+      if (!nome || !descricao || !valor || !marca || !unidade_medida || !id_secao) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+      }
+      if (typeof valor !== 'number' || valor <= 0) {
+        return res.status(400).json({ message: 'O valor deve ser um número positivo.' });
+      }
+
       const query = `
         UPDATE produto
         SET nome = $1, descricao = $2, valor = $3, marca = $4, unidade_medida = $5, id_secao = $6
@@ -66,7 +75,7 @@ class ProdutoController {
     }
   }
 
-// Deletar produto
+  // Deletar produto
   async delete_produto(req, res) {
     try {
       const { id } = req.params;
@@ -83,7 +92,7 @@ class ProdutoController {
     }
   }
 
-// Buscar produto por id
+  // Buscar produto por id
   async get_produto_by_id(req, res) {
     try {
       const { id } = req.params;

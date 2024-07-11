@@ -12,7 +12,7 @@ const Header = () => {
     <Box sx={{ width: "100vh" }}>
       <AppBar
         sx={{
-          backgroundColor: "rgba(0, 0, 0, 0.2)",
+          backgroundColor: "rgba(30, 3, 40, 1)",
           marginBottom: 20
         }}
       >

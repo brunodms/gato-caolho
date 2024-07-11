@@ -113,7 +113,7 @@ const Login = () => {
   };
 
   return (
-    <Box>
+    <Box component="div" sx={{ overflow: 'hidden' }}>
       <ThemeProvider theme={theme}>
         <Box
           component="form"
