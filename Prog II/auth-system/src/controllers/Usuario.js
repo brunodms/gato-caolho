@@ -34,8 +34,27 @@ class UsuarioController {
   async update_usuario(req, res) {
     try {
       const { id } = req.params;
-      const { nome, cpf, senha, email, telefone, id_cargo, status } = req.body;
-      const dataAdmissao = new Date().toISOString().slice(0, 10);
+      const { nome, cpf, senha, email, telefone, id_cargo, status, data_admissao } = req.body;
+
+      if (!validarCPF(cpf)) {
+        return res.status(400).json({ message: 'CPF inválido.' });
+      } else if (!validarEmail(email)) {
+        return res.status(400).json({ message: 'Email inválido.' });
+      } else if (!validarSenha(senha)) {
+        return res.status(400).json({ message: 'Senha inválida.' });
+      } else if (!validarTelefone(telefone)) {
+        return res.status(400).json({ message: 'Telefone inválido.' });
+      }
+
+      let userExistente = await pool.query('SELECT * FROM usuario WHERE cpf = $1', [cpf]);
+      if (userExistente.rows.length > 0) {
+        return res.status(400).json({ message: 'CPF informado já possui registro.' });
+      }
+
+      userExistente = await pool.query('SELECT * FROM usuario WHERE email = $1', [email]);
+      if (userExistente.rows.length > 0) {
+        return res.status(400).json({ message: 'E-mail informado já possui registro.' });
+      }
 
       const userResult = await pool.query('SELECT * FROM usuario WHERE id_usuario = $1', [id]);
   
@@ -54,7 +73,7 @@ class UsuarioController {
         WHERE id_usuario = $9
       `;
   
-      await pool.query(updateQuery, [nome, cpf, senha ? hashedPassword : userResult.rows[0].senha, email, telefone, id_cargo, dataAdmissao, status, id]);
+      await pool.query(updateQuery, [nome, cpf, senha ? hashedPassword : userResult.rows[0].senha, email, telefone, id_cargo, data_admissao, status, id]);
   
       res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
     } catch (err) {
