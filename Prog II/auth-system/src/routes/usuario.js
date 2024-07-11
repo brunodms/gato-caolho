@@ -5,7 +5,7 @@ import loginRequired from '../middlewares/loginRequired';
 const routes = new Router();
 
 // Rota para a página inicial da API
-routes.get('/', loginRequired, usuarioController.index);
+routes.get('/usuario', loginRequired, usuarioController.index);
 routes.get('/:id', loginRequired, usuarioController.getById);
 routes.put('/update_usuario/:id', loginRequired, usuarioController.update_usuario);
 routes.post('/login/', usuarioController.login);

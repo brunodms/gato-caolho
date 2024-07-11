@@ -1,5 +1,6 @@
 // POSTs e GETs mais elaborados
 import getRelatorioPedidos from "../service/getRelatorioPedidos";
+import axios from 'axios';
 
 // GETs Básicos
 import getUsuario from "../service/getUsuario";
@@ -16,7 +17,7 @@ import getVenda from "../service/getVenda";
 function TestesIntegracao() {
 
   const handleClickUsuario = async () => {
-    const response = await getUsuario();
+    const response = await axios.get('/usuario');
     console.log(response);
   };
 
