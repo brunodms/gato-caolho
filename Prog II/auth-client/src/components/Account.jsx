@@ -7,19 +7,18 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
   createTheme,
-  FormControlLabel,
   MenuItem,
   Stack,
   TextField,
   ThemeProvider,
+  FormControlLabel,
+  Checkbox
 } from "@mui/material";
 
-import getUserById from "../service/getUsuarioById";
-import putUser from "../service/putUser";
 import getCargo from "../service/getCargo";
 import getUsuarioById from "../service/getUsuarioById";
+import putUser from "../service/putUser";
 
 const theme = createTheme({
   palette: {
@@ -71,7 +70,6 @@ const theme = createTheme({
     },
   },
 });
-
 const Account = () => {
   const id_usuario = localStorage.getItem("id_usuario");
   const navigate = useNavigate();
@@ -89,7 +87,7 @@ const Account = () => {
     isEditing: false,
   });
 
-  useState(() => {
+  useEffect(() => {
     const fetchUsuario = async () => {
       try {
         const response = await getUsuarioById(id_usuario);
@@ -129,6 +127,7 @@ const Account = () => {
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
+
   const handleChangeSuccess = (response) => {
     console.log("Alteração bem-sucedida", response);
     navigate("/");
@@ -155,7 +154,7 @@ const Account = () => {
     }
   };
 
-  const handleStatusChange= (event) => {
+  const handleStatusChange = (event) => {
     setFormData({ ...formData, status: event.target.checked });
   };
 
@@ -164,7 +163,7 @@ const Account = () => {
   };
 
   const handleSave = async () => {
-
+    // Implementar lógica de salvar aqui
   };
 
   return (
@@ -172,13 +171,13 @@ const Account = () => {
       <ThemeProvider theme={theme}>
         <Box
           component="form"
+          onSubmit={handleSubmit}
           sx={{
             display: "flex",
             flexDirection: "column",
             marginTop: 20,
             minHeight: "100vw",
           }}
-          onSubmit={handleSubmit}
         >
           <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
             <Stack
@@ -194,7 +193,7 @@ const Account = () => {
                   name="cpf"
                   placeholder="cpf"
                   type="text"
-                  value={formData.cpf || ""}
+                  value={formData.cpf}
                   onChange={handleChange}
                   disabled
                 />
@@ -205,7 +204,7 @@ const Account = () => {
                   name="email"
                   placeholder="email"
                   type="email"
-                  value={formData.email || ""}
+                  value={formData.email}
                   onChange={handleChange}
                   disabled
                 />
@@ -216,7 +215,7 @@ const Account = () => {
                   name="nome"
                   placeholder="nome"
                   type="text"
-                  value={formData.nome || ""}
+                  value={formData.nome}
                   onChange={handleChange}
                   disabled={!formData.isEditing}
                 />
@@ -226,62 +225,57 @@ const Account = () => {
                   variant="outlined"
                   name="data_admissao"
                   type="date"
-                  value={formData.data_admissao || ""}
+                  value={formData.data_admissao}
                   onChange={handleChange}
                   InputLabelProps={{ shrink: true }}
                   disabled
                 />
-                <Stack
-                  direction="line"
-                  spacing={2}
+                <TextField
+                  id="account_select_cargo"
+                  label="Cargo"
+                  variant="outlined"
+                  name="id_cargo"
+                  placeholder="cargo"
+                  select
+                  value={formData.id_cargo}
+                  onChange={handleChange}
+                  disabled={!formData.isEditing}
+                  sx={{ width: "100%", maxWidth: 300 }}
                 >
-                  <TextField
-            id="account_select_cargo"
-            label="Cargo"
-            variant="outlined"
-            name="id_cargo"
-            placeholder="cargo"
-            select
-            value={formData.id_cargo}
-            onChange={handleChange}
-            disabled={!formData.isEditing}
-            sx={{ width: "100%", maxWidth: 300 }}
-          >
-            {cargos.map((cargo) => (
-              <MenuItem key={cargo.id_cargo} value={cargo.id_cargo}>
-                {cargo.cargo}
-              </MenuItem>
-            ))}
-          </TextField>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        disabled={!formData.isEditing}
-                        checked={formData.status}
-                        onChange={handleStatusChange}
-                        name="status"
-                        color="primary"
-                        sx={{
-                          "& .MuiSvgIcon-root": {
-                            color: "white",
-                          },
-                          "& .MuiCheckbox-root": {
-                            backgroundColor: "rgba(108, 11, 142, 1)",
-                          },
-                          "& .MuiCheckbox-checked": {
-                            backgroundColor: "rgba(108, 11, 142, 1)",
-                          },
-                        }}
-                      />
-                    }
-                    label="Ativo"
-                    sx={{
-                      "& .MuiFormControlLabel-label": {
-                        color: "white",
-                      },
-                    }}
-                  />
-                </Stack>
+                  {cargos.map((cargo) => (
+                    <MenuItem key={cargo.id_cargo} value={cargo.id_cargo}>
+                      {cargo.cargo}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      disabled={!formData.isEditing}
+                      checked={formData.status}
+                      onChange={handleStatusChange}
+                      name="status"
+                      color="primary"
+                      sx={{
+                        "& .MuiSvgIcon-root": {
+                          color: "white",
+                        },
+                        "& .MuiCheckbox-root": {
+                          backgroundColor: "rgba(108, 11, 142, 1)",
+                        },
+                        "& .MuiCheckbox-checked": {
+                          backgroundColor: "rgba(108, 11, 142, 1)",
+                        },
+                      }}
+                    />
+                  }
+                  label="Ativo"
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      color: "white",
+                    },
+                  }}
+                />
                 <TextField
                   id="account_telefone"
                   label="Telefone"
@@ -289,11 +283,10 @@ const Account = () => {
                   name="telefone"
                   placeholder="telefone"
                   type="number"
-                  value={formData.telefone || ""}
+                  value={formData.telefone}
                   onChange={handleChange}
                   disabled={!formData.isEditing}
                 />
-
                 <TextField
                   id="account_senha"
                   label="Senha"
@@ -301,7 +294,7 @@ const Account = () => {
                   name="senha"
                   placeholder="senha"
                   type="password"
-                  value={formData.senha || ""}
+                  value={formData.senha}
                   onChange={handleChange}
                   disabled={!formData.isEditing}
                 />
@@ -329,4 +322,5 @@ const Account = () => {
     </Box>
   );
 };
+
 export default Account;
