@@ -199,7 +199,7 @@ const Signup = () => {
                   id="signup_select_cargo"
                   label="Cargo"
                   variant="outlined"
-                  name="cargo"
+                  name="id_cargo"
                   placeholder="cargo"
                   select
                   value={formData.cargo}
