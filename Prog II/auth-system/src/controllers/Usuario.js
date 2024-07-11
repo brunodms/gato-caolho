@@ -1,7 +1,7 @@
 import pool from '../config/dbConfig';
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-//const pool = require('../config/dbConfig');
+const { check, validationResult } = require('express-validator');
 
 class UsuarioController {
   // Rota de teste para verificar se a API está funcionando
@@ -18,8 +18,11 @@ class UsuarioController {
   async getById(req, res) {
     try {
       const { id } = req.params;
+      if (!id || isNaN(id)) {
+        return res.status(400).json({ message: 'ID inválido.' });
+      }
       const result = await pool.query('SELECT * FROM usuario WHERE id_usuario = $1', [id]);
-      
+
       if (result.rows.length === 0) {
         return res.status(404).json({ message: 'Usuário não encontrado.' });
       }
@@ -35,34 +38,42 @@ class UsuarioController {
     try {
       const { id } = req.params;
       const { nome, cpf, senha, email, telefone, id_cargo, status } = req.body;
+      
+      // Validações básicas
+      if (!id || isNaN(id)) {
+        return res.status(400).json({ message: 'ID inválido.' });
+      }
+      if (!nome || !cpf || !email || !telefone || isNaN(id_cargo)) {
+        return res.status(400).json({ message: 'Dados inválidos.' });
+      }
+
       const dataAdmissao = new Date().toISOString().slice(0, 10);
 
       const userResult = await pool.query('SELECT * FROM usuario WHERE id_usuario = $1', [id]);
-  
+
       if (userResult.rows.length === 0) {
         return res.status(404).json({ message: 'Usuário não encontrado.' });
       }
-  
+
       let hashedPassword;
       if (senha) {
         hashedPassword = await bcrypt.hash(senha, 10);
       }
-  
+
       const updateQuery = `
         UPDATE usuario 
         SET nome = $1, cpf = $2, senha = COALESCE($3, senha), email = $4, telefone = $5, id_cargo = $6, data_admissao = $7, status = $8
         WHERE id_usuario = $9
       `;
-  
+
       await pool.query(updateQuery, [nome, cpf, senha ? hashedPassword : userResult.rows[0].senha, email, telefone, id_cargo, dataAdmissao, status, id]);
-  
+
       res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
     } catch (err) {
       console.error(err);
       res.status(500).send('Erro no servidor');
     }
   }
-  
 
   async login(req, res) {
     try {
@@ -100,48 +111,63 @@ class UsuarioController {
 
   async create_cliente(req, res) {
     try {
-        const { nome, cpf, senha, email, telefone } = req.body;
-        const hashedPassword = await bcrypt.hash(senha, 10);
-        await pool.query('INSERT INTO usuario (nome, cpf, senha, email, telefone, id_cargo) VALUES ($1, $2, $3, $4, $5, 3)', [nome, cpf, hashedPassword, email, telefone]);
-        res.status(201).json({ message: 'Registro efetuado com sucesso!' });
+      const { nome, cpf, senha, email, telefone } = req.body;
+
+      // Validações básicas
+      if (!nome || !cpf || !senha || !email || !telefone) {
+        return res.status(400).json({ message: 'Dados inválidos.' });
+      }
+
+      const hashedPassword = await bcrypt.hash(senha, 10);
+      await pool.query('INSERT INTO usuario (nome, cpf, senha, email, telefone, id_cargo) VALUES ($1, $2, $3, $4, $5, 3)', [nome, cpf, hashedPassword, email, telefone]);
+      res.status(201).json({ message: 'Registro efetuado com sucesso!' });
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ message: 'Erro ao registrar usuário.' });
+      console.log(error);
+      return res.status(400).json({ message: 'Erro ao registrar usuário.' });
     }
   }
 
   async create_funcionario(req, res) {
     try {
-        const { nome, cpf, senha, email, telefone } = req.body;
-        const hashedPassword = await bcrypt.hash(senha, 10);
-        const dataAdmissao = new Date().toISOString().slice(0, 10);
-        const status = true;
-        await pool.query("INSERT INTO usuario (nome, cpf, senha, email, telefone, id_cargo, data_admissao, status) VALUES ($1, $2, $3, $4, $5, 2, $6, $7)", 
-          [nome, cpf, hashedPassword, email, telefone, dataAdmissao, status]);
-        res.status(201).json({ message: 'Registro efetuado com sucesso!' });
+      const { nome, cpf, senha, email, telefone } = req.body;
+
+      // Validações básicas
+      if (!nome || !cpf || !senha || !email || !telefone) {
+        return res.status(400).json({ message: 'Dados inválidos.' });
+      }
+
+      const hashedPassword = await bcrypt.hash(senha, 10);
+      const dataAdmissao = new Date().toISOString().slice(0, 10);
+      const status = true;
+      await pool.query("INSERT INTO usuario (nome, cpf, senha, email, telefone, id_cargo, data_admissao, status) VALUES ($1, $2, $3, $4, $5, 2, $6, $7)", 
+        [nome, cpf, hashedPassword, email, telefone, dataAdmissao, status]);
+      res.status(201).json({ message: 'Registro efetuado com sucesso!' });
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ message: 'Erro ao registrar usuário.' });
+      console.log(error);
+      return res.status(400).json({ message: 'Erro ao registrar usuário.' });
     }
   }
 
   async delete_usuario(req, res) {
     try {
-        const { id } = req.params;
+      const { id } = req.params;
 
-        const result = await pool.query("DELETE FROM usuario WHERE id_usuario = $1", [id]);
+      if (!id || isNaN(id)) {
+        return res.status(400).json({ message: 'ID inválido.' });
+      }
 
-        if (result.rowCount === 0) {
-            return res.status(404).json({ message: 'Usuário não encontrado.' });
-        }
+      const result = await pool.query("DELETE FROM usuario WHERE id_usuario = $1", [id]);
 
-        res.status(200).json({ message: 'Usuário excluído com sucesso!' });
+      if (result.rowCount === 0) {
+        return res.status(404).json({ message: 'Usuário não encontrado.' });
+      }
+
+      res.status(200).json({ message: 'Usuário excluído com sucesso!' });
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ message: 'Erro ao excluir usuário.' });
+      console.log(error);
+      return res.status(400).json({ message: 'Erro ao excluir usuário.' });
     }
   }
-
 }
 
 export default new UsuarioController();
