@@ -1,7 +1,7 @@
 async function putUnactiveUser(data) {
     const id_usuario = localStorage.getItem('id_usuario'); 
     const token = localStorage.getItem('token'); 
-    const response = await fetch(`http://localhost:8080/usuario/update_usuario/${id_usuario}`, {
+    const response = await fetch(`http://localhost:8080/usuario/desativa_usuario/${id_usuario}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
