@@ -14,8 +14,9 @@ import {
   ThemeProvider,
 } from "@mui/material";
 
-import getUser from "../service/getUsuario";
+import getUserById from "../service/getUsuarioById";
 import getCargo from "../service/getCargo";
+import getUsuarioById from "../service/getUsuarioById";
 
 
 
@@ -69,11 +70,11 @@ const theme = createTheme({
     },
   },
 });
-const Account = () => {
-  const id_usuario = localStorage.getItem('email');
-  console.log(id_usuario);
 
+const Account = () => {
+  const id_usuario = localStorage.getItem('id_usuario');
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     cpf: "",
     nome: "",
@@ -83,6 +84,28 @@ const Account = () => {
     id_cargo: "",
     telefone: "",
   });
+
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      try {
+        const response = await getUsuarioById(id_usuario);
+        setFormData({
+          cpf: response.cpf,
+          nome: response.nome,
+          email: response.email,
+          senha: response.senha,
+          data_admissao: response.data_admissao,
+          id_cargo: response.id_cargo,
+          telefone: response.telefone,
+        });
+      } catch (error) {
+        console.error("Error fetching usuario:", error);
+      }
+    };
+
+    fetchUsuario();
+  }, [id_usuario]);
+
   const [cargos, setCargos] = useState([]);
   useEffect(() => {
     const fetchCargos = async () => {

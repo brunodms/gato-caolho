@@ -88,7 +88,7 @@ class UsuarioController {
 
       if (isPasswordValid) {
         const token = jwt.sign({ email: user.email }, 'your_jwt_secret', { expiresIn: '1h' });
-        res.json({ token });
+        res.json({ token, id_usuario: user.id_usuario });
       } else {
         res.status(401).json({ message: 'Verifique suas credenciais e tente novamente.' });
       }

@@ -84,7 +84,7 @@ const Login = () => {
 
   const handleLoginSuccess = async (response) => {
     console.log("Login bem-sucedido", response);
-    login(response.token, { email: formData.email, senha: formData.senha }); // Atualiza o token e usuário no contexto
+    login(response.token, { id_usuario: response.id_usuario, email: formData.email, senha: formData.senha }); // Atualiza o token e usuário no contexto
     navigate("/menu");
   };
 
