@@ -14,6 +14,7 @@ const loginRequired = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log(`decoded é = ${decoded}`);
     const { id } = decoded;
 
     // Consulta ao banco para verificar se o usuário existe
