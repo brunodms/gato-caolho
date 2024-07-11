@@ -202,7 +202,7 @@ const Signup = () => {
                   name="cargo"
                   placeholder="cargo"
                   select
-                  value={formData.id_cargo}
+                  value={formData.cargo}
                   onChange={handleChange}
                 >
                   {cargos.map((cargo) => (
