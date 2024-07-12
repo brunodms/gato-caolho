@@ -25,9 +25,6 @@ class ProdutoController {
       if (typeof valor !== 'number' || valor <= 0) {
         return res.status(400).json({ message: 'O valor deve ser um número positivo.' });
       }
-      if (typeof id_secao !== 'number' || id_secao <= 0) {
-        return res.status(400).json({ message: 'A seção deve ser um número positivo.' });
-      }
 
       const query = `
         INSERT INTO produto (nome, descricao, valor, marca, unidade_medida, id_secao)
